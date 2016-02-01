@@ -5,13 +5,13 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="Sample Category"
-            id="sampleView">
+            name="Limpet POC Category"
+            id="limpetPOCView">
       </category>
       <view
-            name="Sample View"
+            name="Limpet POC View"
             icon="icons/sample.gif"
-            category="sampleView"
+            category="limpetPOCView"
             class="sampleview.views.SampleView"
             id="sampleview.views.SampleView">
       </view>
@@ -19,7 +19,7 @@
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
-            targetID="org.eclipse.jdt.ui.JavaPerspective">
+            targetID="org.eclipse.ui.resourcePerspective">
          <view
                ratio="0.5"
                relative="org.eclipse.ui.views.ProblemView"
