@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="SampleModelOperation" name="SampleModelOperation" schema="schema/sampleModel.operation.exsd"/>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="sampleModel.allNumeric">
+        <iterate
+                  operator="and">
+               <instanceof
+                     value="samplemodel.SampleModel">
+               </instanceof>
+               <test
+                     property="sampleModel.numeric"
+                     value="true">
+               </test>
+            </iterate>
+      </definition>
+      <definition
+            id="sampleModel.allString">
+         <iterate
+               operator="and">
+            <instanceof
+                  value="samplemodel.SampleModel">
+            </instanceof>
+            <test
+                  property="sampleModel.numeric"
+                  value="false">
+            </test>
+         </iterate>
+      </definition>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="samplemodel.SampleModelNumericPropertyTester"
+            id="SampleModelNumericPropertyTester"
+            namespace="sampleModel"
+            properties="numeric"
+            type="samplemodel.SampleModel">
+      </propertyTester>
+   </extension>
+
+</plugin>

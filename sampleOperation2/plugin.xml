@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="sampleModel.SampleModelOperation">
+      <operation
+            class="sampleoperation2.ConcatenateStringsOperation"
+            name="Concatenate Strings">         
+         <applicable>
+            <and>
+               <count
+                     value="(1-">
+               </count>
+               <reference
+                     definitionId="sampleModel.allString">
+               </reference>
+            </and>
+      	</applicable>
+      </operation>
+   </extension>
+
+</plugin>
