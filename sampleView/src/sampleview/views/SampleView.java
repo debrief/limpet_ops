@@ -69,7 +69,7 @@ public class SampleView extends ViewPart
   {
     return new Object[]
     {new SampleModel(12), new SampleModel("A String Object"), new SampleModel(
-        133.4), new SampleModel("... another one"), new Date()};
+        133.4), new SampleModel("... another one"), new Date(), new SampleModel(332.3), new SampleModel("Another string")};
   }
 
   private void hookContextMenu()
