@@ -32,7 +32,7 @@ import samplemodel.SampleModelOperation;
  * Ref: https://www.eclipse.org/forums/index.php/t/107919/
  * 
  * @author dinko.ivanov@gepardsoft.com
- *
+ * 
  */
 public class SampleView extends ViewPart
 {
@@ -68,8 +68,10 @@ public class SampleView extends ViewPart
   private Object[] createSampleData()
   {
     return new Object[]
-    {new SampleModel(12), new SampleModel("A String Object"), new SampleModel(
-        133.4), new SampleModel("... another one"), new Date(), new SampleModel(332.3), new SampleModel("Another string")};
+    {new SampleModel(12), new SampleModel("A String Object"),
+        new SampleModel(133.4), new SampleModel("... another one"), new Date(),
+        new SampleModel(332.3), new SampleModel("Another string"),
+        new SampleModel("smiles"), new SampleModel(1), new SampleModel(5)};
   }
 
   private void hookContextMenu()
@@ -93,8 +95,8 @@ public class SampleView extends ViewPart
 
     IConfigurationElement[] configurationElements = getContributedOperations();
 
-    final IStructuredSelection selection = (IStructuredSelection) viewer
-        .getSelection();
+    final IStructuredSelection selection =
+        (IStructuredSelection) viewer.getSelection();
     EvaluationContext context = new EvaluationContext(null, selection);
 
     for (IConfigurationElement configElement : configurationElements)
@@ -112,8 +114,8 @@ public class SampleView extends ViewPart
           {
             try
             {
-              SampleModelOperation operation = (SampleModelOperation) cfg
-                  .createExecutableExtension("class");              
+              SampleModelOperation operation =
+                  (SampleModelOperation) cfg.createExecutableExtension("class");
               Object result = operation.execute(selection.toArray());
               MessageDialog.openInformation(getSite().getShell(), name, name
                   + " operation result is " + result.toString());
@@ -144,8 +146,8 @@ public class SampleView extends ViewPart
     {
       IConfigurationElement applicableElement = children[0];
 
-      final IConfigurationElement[] expressionElements = applicableElement
-          .getChildren();
+      final IConfigurationElement[] expressionElements =
+          applicableElement.getChildren();
       if (expressionElements.length > 0)
       {
 
@@ -153,10 +155,11 @@ public class SampleView extends ViewPart
 
         try
         {
-          Expression applicableExpression = elementHandler.create(converter,
-              expressionElement);
-          applicable = applicableExpression.evaluate(evaluationContext).equals(
-              EvaluationResult.TRUE);
+          Expression applicableExpression =
+              elementHandler.create(converter, expressionElement);
+          applicable =
+              applicableExpression.evaluate(evaluationContext).equals(
+                  EvaluationResult.TRUE);
         }
         catch (CoreException e)
         {
@@ -173,8 +176,9 @@ public class SampleView extends ViewPart
     if (configurationElements == null)
     {
       // lazy initialization
-      configurationElements = Platform.getExtensionRegistry()
-          .getConfigurationElementsFor("sampleModel.SampleModelOperation");
+      configurationElements =
+          Platform.getExtensionRegistry().getConfigurationElementsFor(
+              "sampleModel.SampleModelOperation");
     }
     return configurationElements;
   }

@@ -17,6 +17,24 @@
             </and>
       	</applicable>
       </operation>
+      <operation
+            class="sampleoperation1.ConcatenateObjectsOperation"
+            name="Operate on 2 numbers and 1 string">
+         <applicable>
+            <reference
+                  definitionId="sampleModel.2numbers1string">
+            </reference>
+         </applicable>
+      </operation>
+      <operation
+            class="sampleoperation1.ConcatenateObjectsOperation"
+            name="Operate on non-numeric selection">
+         <applicable>
+            <reference
+                  definitionId="sampleModel.noNumbers">
+            </reference>
+         </applicable>
+      </operation>
    </extension>
 
 </plugin>
