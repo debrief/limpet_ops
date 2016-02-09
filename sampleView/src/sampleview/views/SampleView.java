@@ -1,6 +1,8 @@
 package sampleview.views;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.core.expressions.ElementHandler;
 import org.eclipse.core.expressions.EvaluationContext;
@@ -45,6 +47,8 @@ public class SampleView extends ViewPart
 
   private IConfigurationElement[] configurationElements;
 
+  private List<Object> myData;
+
   /**
    * The constructor.
    */
@@ -59,18 +63,29 @@ public class SampleView extends ViewPart
   {
     viewer = new ListViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
     viewer.setContentProvider(new ArrayContentProvider());
-    viewer.setInput(createSampleData());
+    
+    myData = createSampleData();
+    viewer.setInput(myData);
 
     hookContextMenu();
   }
 
-  private Object[] createSampleData()
+  private List<Object> createSampleData()
   {
-    return new Object[]
-    {new SampleModel(12), new SampleModel("A String Object"),
-        new SampleModel(133.4), new SampleModel("... another one"), new Date(),
-        new SampleModel(332.3), new SampleModel("Another string"),
-        new SampleModel("smiles"), new SampleModel(1), new SampleModel(5)};
+    List<Object> res = new ArrayList<Object>();
+
+    res.add(new SampleModel(12));
+    res.add(new SampleModel("A String Object"));
+    res.add(new SampleModel(133.4));
+    res.add(new SampleModel("... another one"));
+    res.add(new Date());
+    res.add(new SampleModel(332.3));
+    res.add(new SampleModel("Another string"));
+    res.add(new SampleModel("smiles"));
+    res.add(new SampleModel(1));
+    res.add(new SampleModel(5));
+
+    return res;
   }
 
   private void hookContextMenu()
@@ -89,25 +104,25 @@ public class SampleView extends ViewPart
     getSite().registerContextMenu(menuMgr, viewer);
   }
 
-  private void fillContextMenu(IMenuManager manager)
+  private void fillContextMenu(final IMenuManager manager)
   {
 
-    IConfigurationElement[] configurationElements = getContributedOperations();
+    final IConfigurationElement[] operations = getContributedOperations();
 
     final IStructuredSelection selection =
         (IStructuredSelection) viewer.getSelection();
     EvaluationContext context = new EvaluationContext(null, selection);
-    
+
     final Object[] items = selection.toArray();
 
-    for (IConfigurationElement configElement : configurationElements)
+    for (IConfigurationElement operation : operations)
     {
-      boolean applicable = readApplicable(configElement, context);
+      boolean applicable = isApplicable(operation, context);
 
       if (applicable)
       {
-        final String name = configElement.getAttribute("name");
-        final IConfigurationElement cfg = configElement;
+        final String name = operation.getAttribute("name");
+        final IConfigurationElement cfg = operation;
         manager.add(new Action(name)
         {
           @Override
@@ -117,10 +132,9 @@ public class SampleView extends ViewPart
             {
               SampleModelOperation operation =
                   (SampleModelOperation) cfg.createExecutableExtension("class");
-			Object result = operation.execute(items);
+              Object result = operation.execute(items);
               MessageDialog.openInformation(getSite().getShell(), name, name
                   + " operation result is " + result.toString());
-
             }
             catch (CoreException e)
             {
@@ -133,7 +147,7 @@ public class SampleView extends ViewPart
 
   }
 
-  private boolean readApplicable(IConfigurationElement configElement,
+  private boolean isApplicable(IConfigurationElement configElement,
       IEvaluationContext evaluationContext)
   {
     boolean applicable = true;
