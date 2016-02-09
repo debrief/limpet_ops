@@ -19,7 +19,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
@@ -98,6 +97,8 @@ public class SampleView extends ViewPart
     final IStructuredSelection selection =
         (IStructuredSelection) viewer.getSelection();
     EvaluationContext context = new EvaluationContext(null, selection);
+    
+    final Object[] items = selection.toArray();
 
     for (IConfigurationElement configElement : configurationElements)
     {
@@ -116,7 +117,7 @@ public class SampleView extends ViewPart
             {
               SampleModelOperation operation =
                   (SampleModelOperation) cfg.createExecutableExtension("class");
-              Object result = operation.execute(selection.toArray());
+			Object result = operation.execute(items);
               MessageDialog.openInformation(getSite().getShell(), name, name
                   + " operation result is " + result.toString());
 
