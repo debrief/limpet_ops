@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * For a selection of <b>n</b> elements, will return <b>n</b> permutations each starting with
+ * <b>selection[n]</b> element and followed by the rest of the elements. For example selection
+ * [1,2,3] produces permutations [[1,2,3],[2,1,3],[3,1,2]]
+ *
+ */
 public class EachElementVersusTheRest implements OperationInputPermutator
 {
 
