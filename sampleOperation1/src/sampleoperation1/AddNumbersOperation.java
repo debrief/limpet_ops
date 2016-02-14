@@ -6,14 +6,15 @@ import samplemodel.SampleModelOperation;
 public class AddNumbersOperation implements SampleModelOperation
 {
 
-  public Object execute(Object[] input)
+  public Object[] execute(Object[] input)
   {
     double sum = 0;
     for (Object nw : input)
     {
       sum += ((SampleModel) nw).getNumber().doubleValue();
     }
-    return new SampleModel(sum);
+    return new Object[]
+    {new SampleModel(sum)};
   }
 
 }

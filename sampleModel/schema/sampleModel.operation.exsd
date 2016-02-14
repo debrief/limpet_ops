@@ -71,6 +71,16 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="inputPermutator" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":samplemodel.OperationInputPermutator"/>
+               </appinfo>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

@@ -1,6 +1,8 @@
 package sampleview.views;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +28,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.part.ViewPart;
 
+import samplemodel.NoInputPermutations;
+import samplemodel.OperationInputPermutator;
 import samplemodel.SampleModel;
 import samplemodel.SampleModelOperation;
 
@@ -63,7 +67,7 @@ public class SampleView extends ViewPart
   {
     viewer = new ListViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
     viewer.setContentProvider(new ArrayContentProvider());
-    
+
     myData = createSampleData();
     viewer.setInput(myData);
 
@@ -109,11 +113,9 @@ public class SampleView extends ViewPart
 
     final IConfigurationElement[] operations = getContributedOperations();
 
-    final IStructuredSelection selection =
-        (IStructuredSelection) viewer.getSelection();
+    final IStructuredSelection selection = (IStructuredSelection) viewer
+        .getSelection();
     EvaluationContext context = new EvaluationContext(null, selection);
-
-    final Object[] items = selection.toArray();
 
     for (IConfigurationElement operation : operations)
     {
@@ -121,30 +123,68 @@ public class SampleView extends ViewPart
 
       if (applicable)
       {
+        final List<Object[]> inputPermutations = getInputPermutations(selection,
+            operation);
         final String name = operation.getAttribute("name");
-        final IConfigurationElement cfg = operation;
-        manager.add(new Action(name)
+        for (Object[] inputPermutation : inputPermutations)
         {
-          @Override
-          public void run()
-          {
-            try
-            {
-              SampleModelOperation operation =
-                  (SampleModelOperation) cfg.createExecutableExtension("class");
-              Object result = operation.execute(items);
-              MessageDialog.openInformation(getSite().getShell(), name, name
-                  + " operation result is " + result.toString());
-            }
-            catch (CoreException e)
-            {
-              e.printStackTrace();
-            }
-          }
-        });
+          String operationName = MessageFormat.format(name, inputPermutation);
+          Action action = createOperationAction(inputPermutation, operationName,
+              operation);
+          manager.add(action);
+        }
+
       }
     }
 
+  }
+
+  private List<Object[]> getInputPermutations(
+      final IStructuredSelection selection, IConfigurationElement operation)
+  {
+    // by default assume commutative operation
+    OperationInputPermutator inputPermutator = new NoInputPermutations();
+    if (operation.getAttribute("inputPermutator") != null)
+    {
+      // a non-commutative operation, i.e. a+b=b+a
+      try
+      {
+        inputPermutator = (OperationInputPermutator) operation
+            .createExecutableExtension("inputPermutator");
+      }
+      catch (CoreException e)
+      {
+        e.printStackTrace();
+      }
+    }
+    return inputPermutator.getOperationInputPermutations(selection.toArray());
+  }
+
+  private Action createOperationAction(final Object[] selection,
+      final String operationName,
+      final IConfigurationElement operationDescriptor)
+  {
+    return new Action(operationName)
+    {
+      @Override
+      public void run()
+      {
+        try
+        {
+          SampleModelOperation operation =
+              (SampleModelOperation) operationDescriptor
+                  .createExecutableExtension("class");
+          Object[] result = operation.execute(selection);
+          MessageDialog.openInformation(getSite().getShell(), operationName,
+              operationName + " operation result is " + Arrays.toString(
+                  result));
+        }
+        catch (CoreException e)
+        {
+          e.printStackTrace();
+        }
+      }
+    };
   }
 
   private boolean isApplicable(IConfigurationElement configElement,
@@ -161,8 +201,8 @@ public class SampleView extends ViewPart
     {
       IConfigurationElement applicableElement = children[0];
 
-      final IConfigurationElement[] expressionElements =
-          applicableElement.getChildren();
+      final IConfigurationElement[] expressionElements = applicableElement
+          .getChildren();
       if (expressionElements.length > 0)
       {
 
@@ -170,11 +210,10 @@ public class SampleView extends ViewPart
 
         try
         {
-          Expression applicableExpression =
-              elementHandler.create(converter, expressionElement);
-          applicable =
-              applicableExpression.evaluate(evaluationContext).equals(
-                  EvaluationResult.TRUE);
+          Expression applicableExpression = elementHandler.create(converter,
+              expressionElement);
+          applicable = applicableExpression.evaluate(evaluationContext).equals(
+              EvaluationResult.TRUE);
         }
         catch (CoreException e)
         {
@@ -191,9 +230,8 @@ public class SampleView extends ViewPart
     if (configurationElements == null)
     {
       // lazy initialization
-      configurationElements =
-          Platform.getExtensionRegistry().getConfigurationElementsFor(
-              "sampleModel.SampleModelOperation");
+      configurationElements = Platform.getExtensionRegistry()
+          .getConfigurationElementsFor("sampleModel.SampleModelOperation");
     }
     return configurationElements;
   }

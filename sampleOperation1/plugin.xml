@@ -35,6 +35,36 @@
             </reference>
          </applicable>
       </operation>
+      <operation
+            class="sampleoperation1.SubtractNumbersOperation"
+            inputPermutator="samplemodel.EachElementVersusTheRest"
+            name="Subtract {1} from {0}">
+         <applicable>
+            <and>
+               <count
+                     value="(1-">
+               </count>
+               <reference
+                     definitionId="sampleModel.allNumeric">
+               </reference>
+            </and>
+         </applicable>
+      </operation>
+      <operation
+            class="sampleoperation1.DistanceFromOperation"
+            inputPermutator="samplemodel.EachElementVersusTheRest"
+            name="Distance from {0}">
+         <applicable>
+            <and>
+               <count
+                     value="(1-">
+               </count>
+               <reference
+                     definitionId="sampleModel.allNumeric">
+               </reference>
+            </and>
+         </applicable>
+      </operation>
    </extension>
 
 </plugin>

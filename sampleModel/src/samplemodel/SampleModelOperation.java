@@ -2,5 +2,10 @@ package samplemodel;
 
 public interface SampleModelOperation
 {
-  Object execute(Object[] input);
+      /**
+       * @param input
+       *          array of input objects
+       * @return array of output objects
+       */
+      Object[] execute(Object[] input);
 }

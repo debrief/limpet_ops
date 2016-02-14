@@ -11,7 +11,7 @@ public class ConcatenateObjectsOperation implements SampleModelOperation
   }
 
   @Override
-  public Object execute(Object[] input)
+  public Object[] execute(Object[] input)
   {
 
     StringBuilder sb = new StringBuilder();
@@ -19,7 +19,8 @@ public class ConcatenateObjectsOperation implements SampleModelOperation
     {
       sb.append(o.toString());
     }
-    return new SampleModel(sb.toString());
+    return new Object[]
+    {new SampleModel(sb.toString())};
   }
 
 }
