@@ -113,8 +113,8 @@ public class SampleView extends ViewPart
 
     final IConfigurationElement[] operations = getContributedOperations();
 
-    final IStructuredSelection selection = (IStructuredSelection) viewer
-        .getSelection();
+    final IStructuredSelection selection =
+        (IStructuredSelection) viewer.getSelection();
     EvaluationContext context = new EvaluationContext(null, selection);
 
     for (IConfigurationElement operation : operations)
@@ -123,15 +123,29 @@ public class SampleView extends ViewPart
 
       if (applicable)
       {
-        final List<Object[]> inputPermutations = getInputPermutations(selection,
-            operation);
-        final String name = operation.getAttribute("name");
+        final List<Object[]> inputPermutations =
+            getInputPermutations(selection, operation);
+        String name = operation.getAttribute("name");
+
+        IMenuManager target = manager;
+        if (inputPermutations.size() > 1)
+        {
+          String submenuName = name;
+          int separatorIndex = name.indexOf(">");
+          if (separatorIndex > 0)
+          {
+            submenuName = name.substring(0, separatorIndex);
+            name = name.substring(separatorIndex + 1);
+          }
+          target = new MenuManager(submenuName);
+          manager.add(target);
+        }
         for (Object[] inputPermutation : inputPermutations)
         {
           String operationName = MessageFormat.format(name, inputPermutation);
-          Action action = createOperationAction(inputPermutation, operationName,
-              operation);
-          manager.add(action);
+          Action action =
+              createOperationAction(inputPermutation, operationName, operation);
+          target.add(action);
         }
 
       }
@@ -149,8 +163,9 @@ public class SampleView extends ViewPart
       // a non-commutative operation, i.e. a+b=b+a
       try
       {
-        inputPermutator = (OperationInputPermutator) operation
-            .createExecutableExtension("inputPermutator");
+        inputPermutator =
+            (OperationInputPermutator) operation
+                .createExecutableExtension("inputPermutator");
       }
       catch (CoreException e)
       {
@@ -175,9 +190,10 @@ public class SampleView extends ViewPart
               (SampleModelOperation) operationDescriptor
                   .createExecutableExtension("class");
           Object[] result = operation.execute(selection);
-          MessageDialog.openInformation(getSite().getShell(), operationName,
-              operationName + " operation result is " + Arrays.toString(
-                  result));
+          MessageDialog
+              .openInformation(getSite().getShell(), operationName,
+                  operationName + " operation result is "
+                      + Arrays.toString(result));
         }
         catch (CoreException e)
         {
@@ -201,8 +217,8 @@ public class SampleView extends ViewPart
     {
       IConfigurationElement applicableElement = children[0];
 
-      final IConfigurationElement[] expressionElements = applicableElement
-          .getChildren();
+      final IConfigurationElement[] expressionElements =
+          applicableElement.getChildren();
       if (expressionElements.length > 0)
       {
 
@@ -210,10 +226,11 @@ public class SampleView extends ViewPart
 
         try
         {
-          Expression applicableExpression = elementHandler.create(converter,
-              expressionElement);
-          applicable = applicableExpression.evaluate(evaluationContext).equals(
-              EvaluationResult.TRUE);
+          Expression applicableExpression =
+              elementHandler.create(converter, expressionElement);
+          applicable =
+              applicableExpression.evaluate(evaluationContext).equals(
+                  EvaluationResult.TRUE);
         }
         catch (CoreException e)
         {
@@ -230,8 +247,9 @@ public class SampleView extends ViewPart
     if (configurationElements == null)
     {
       // lazy initialization
-      configurationElements = Platform.getExtensionRegistry()
-          .getConfigurationElementsFor("sampleModel.SampleModelOperation");
+      configurationElements =
+          Platform.getExtensionRegistry().getConfigurationElementsFor(
+              "sampleModel.SampleModelOperation");
     }
     return configurationElements;
   }

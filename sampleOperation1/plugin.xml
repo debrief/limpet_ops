@@ -38,7 +38,7 @@
       <operation
             class="sampleoperation1.SubtractNumbersOperation"
             inputPermutator="samplemodel.EachElementVersusTheRest"
-            name="Subtract {1} from {0}">
+            name="Subtract&gt;{1} from {0}">
          <applicable>
             <and>
                <count
@@ -53,7 +53,7 @@
       <operation
             class="sampleoperation1.DistanceFromOperation"
             inputPermutator="samplemodel.EachElementVersusTheRest"
-            name="Distance from {0}">
+            name="Distance&gt;from {0}">
          <applicable>
             <and>
                <count
