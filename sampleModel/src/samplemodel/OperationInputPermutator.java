@@ -15,7 +15,7 @@ public interface OperationInputPermutator
       /**
        * @param selection
        *          array of selected object
-       * @return the list of valid permutations on which the operation can be aplied
+       * @return the list of valid permutations on which the operation can be applied
        */
       List<Object[]> getOperationInputPermutations(Object[] selection);
 }
