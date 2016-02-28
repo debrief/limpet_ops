@@ -5,7 +5,7 @@
          point="sampleModel.SampleModelOperation">
       <operation
             class="sampleoperation1.AddNumbersOperation"
-            name="Add Numbers">         
+            label="Add Numbers">         
          <applicable>
             <and>
                <count
@@ -19,7 +19,7 @@
       </operation>
       <operation
             class="sampleoperation1.ConcatenateObjectsOperation"
-            name="Operate on 2 numbers and 1 string">
+            label="Operate on 2 numbers and 1 string">
          <applicable>
             <reference
                   definitionId="sampleModel.2numbers1string">
@@ -28,7 +28,7 @@
       </operation>
       <operation
             class="sampleoperation1.ConcatenateObjectsOperation"
-            name="Operate on non-numeric selection">
+            label="Operate on non-numeric selection">
          <applicable>
             <reference
                   definitionId="sampleModel.noNumbers">
@@ -38,7 +38,8 @@
       <operation
             class="sampleoperation1.SubtractNumbersOperation"
             inputPermutator="samplemodel.EachElementVersusTheRest"
-            name="Subtract&gt;{1} from {0}">
+            label="Subtract"
+            permutationLabel="{1} from {0}">
          <applicable>
             <and>
                <count
@@ -53,7 +54,8 @@
       <operation
             class="sampleoperation1.DistanceFromOperation"
             inputPermutator="samplemodel.EachElementVersusTheRest"
-            name="Distance&gt;from {0}">
+            label="Distance"
+            permutationLabel="from {0}">
          <applicable>
             <and>
                <count

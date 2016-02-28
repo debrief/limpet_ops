@@ -64,10 +64,10 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="name" type="string" use="required">
+         <attribute name="label" type="string" use="required">
             <annotation>
                <documentation>
-                  When inputPermutator is specified, multiple operations might be contributed in a common group (submenu). If the name contains greater-than symbol (&gt;), it will separate the group name from individual operation names. To distinguish the individual operations (each handling different input permutation), parameters might be referred by index using curly braces. For example: Subtract&gt;{0} from {1}. The group will be named &quot;Subtract&quot; and individual operations will be named after the 1st and 2nd elements in the input selection.
+                  Short text describing the operation. It will be used for display purspose, such as in context menus, etc.
                </documentation>
             </annotation>
          </attribute>
@@ -79,6 +79,13 @@
                <appinfo>
                   <meta.attribute kind="java" basedOn=":samplemodel.OperationInputPermutator"/>
                </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="permutationLabel" type="string">
+            <annotation>
+               <documentation>
+                  When inputPermutator is specified, multiple operations might be contributed in a common group (submenu). In such case the label will designate the group name, while operations inside the group (each handling different input permutation) will be labeled using this attribute. Operation arguments might be referred by index using curly braces. For example: {0} from {1}. Individual operations will be named after the 1st and 2nd elements in the input selection.
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

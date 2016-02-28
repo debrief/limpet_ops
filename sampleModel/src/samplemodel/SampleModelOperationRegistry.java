@@ -35,9 +35,8 @@ public class SampleModelOperationRegistry
     if (configurationElements == null)
     {
       // lazy initialization
-      configurationElements =
-          Platform.getExtensionRegistry().getConfigurationElementsFor(
-              "sampleModel.SampleModelOperation");
+      configurationElements = Platform.getExtensionRegistry()
+          .getConfigurationElementsFor("sampleModel.SampleModelOperation");
     }
     return configurationElements;
   }
@@ -63,25 +62,25 @@ public class SampleModelOperationRegistry
 
       if (applicable)
       {
-        final List<Object[]> inputPermutations =
-            getInputPermutations(selection.toArray(), operation);
-        String name = operation.getAttribute("name");
+        final List<Object[]> inputPermutations = getInputPermutations(selection
+            .toArray(), operation);
+        String label = operation.getAttribute("label");
 
         IOperationLibraryBuilder target = builder;
         if (inputPermutations.size() > 1)
         {
-          String submenuName = name;
-          int separatorIndex = name.indexOf(">");
-          if (separatorIndex > 0)
-          {
-            submenuName = name.substring(0, separatorIndex);
-            name = name.substring(separatorIndex + 1);
-          }
-          target = builder.buildGroupNode(submenuName);
+          target = builder.buildGroupNode(label);
         }
+        
+        String permutationLabel = operation.getAttribute("permutationLabel");
+        if (permutationLabel != null)
+        {
+          label = permutationLabel;
+        }
+
         for (Object[] inputPermutation : inputPermutations)
         {
-          String operationName = MessageFormat.format(name, inputPermutation);
+          String operationName = MessageFormat.format(label, inputPermutation);
           target.buildOperationNode(inputPermutation, operationName, operation);
         }
 
@@ -100,9 +99,8 @@ public class SampleModelOperationRegistry
       // a non-commutative operation, i.e. a+b=b+a
       try
       {
-        inputPermutator =
-            (OperationInputPermutator) operation
-                .createExecutableExtension("inputPermutator");
+        inputPermutator = (OperationInputPermutator) operation
+            .createExecutableExtension("inputPermutator");
       }
       catch (CoreException e)
       {
@@ -126,8 +124,8 @@ public class SampleModelOperationRegistry
     {
       IConfigurationElement applicableElement = children[0];
 
-      final IConfigurationElement[] expressionElements =
-          applicableElement.getChildren();
+      final IConfigurationElement[] expressionElements = applicableElement
+          .getChildren();
       if (expressionElements.length > 0)
       {
 
@@ -135,11 +133,10 @@ public class SampleModelOperationRegistry
 
         try
         {
-          Expression applicableExpression =
-              elementHandler.create(converter, expressionElement);
-          applicable =
-              applicableExpression.evaluate(evaluationContext).equals(
-                  EvaluationResult.TRUE);
+          Expression applicableExpression = elementHandler.create(converter,
+              expressionElement);
+          applicable = applicableExpression.evaluate(evaluationContext).equals(
+              EvaluationResult.TRUE);
         }
         catch (CoreException e)
         {
