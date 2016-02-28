@@ -21,9 +21,10 @@
             class="sampleoperation1.ConcatenateObjectsOperation"
             label="Operate on 2 numbers and 1 string">
          <applicable>
-            <reference
-                  definitionId="sampleModel.2numbers1string">
-            </reference>
+           <test
+               property="sampleModel.2numbers1string"
+               value="true">
+         	</test>
          </applicable>
       </operation>
       <operation

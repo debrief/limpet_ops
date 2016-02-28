@@ -31,13 +31,6 @@
          </iterate>
       </definition>
       <definition
-            id="sampleModel.2numbers1string">
-         <test
-               property="sampleModel.2numbers1string"
-               value="true">
-         </test>
-      </definition>
-      <definition
             id="sampleModel.noNumbers">
          <iterate
                ifEmpty="false"
