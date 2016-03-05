@@ -70,6 +70,9 @@
                <documentation>
                   Short text describing the operation. It will be used for display purspose, such as in context menus, etc.
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="inputPermutator" type="string">
@@ -87,6 +90,9 @@
                <documentation>
                   When inputPermutator is specified, multiple operations might be contributed in a common group (submenu). In such case the label will designate the group name, while operations inside the group (each handling different input permutation) will be labeled using this attribute. Operation arguments might be referred by index using curly braces. For example: {0} from {1}. Individual operations will be named after the 1st and 2nd elements in the input selection.
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -119,8 +125,11 @@
 
    <element name="documentation" type="string">
       <annotation>
+         <appinfo>
+            <meta.element translatable="true"/>
+         </appinfo>
          <documentation>
-            Detailed documentation of the operation. Wiki markup is supported (https://en.wikipedia.org/wiki/Wiki_markup).
+            Detailed documentation of the operation. HTML is supported.
          </documentation>
       </annotation>
    </element>
