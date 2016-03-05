@@ -53,6 +53,7 @@
       <complexType>
          <sequence>
             <element ref="applicable" minOccurs="0" maxOccurs="1"/>
+            <element ref="documentation"/>
          </sequence>
          <attribute name="class" type="string" use="required">
             <annotation>
@@ -114,6 +115,14 @@
             <element ref="reference"/>
          </choice>
       </complexType>
+   </element>
+
+   <element name="documentation" type="string">
+      <annotation>
+         <documentation>
+            Detailed documentation of the operation. Wiki markup is supported (https://en.wikipedia.org/wiki/Wiki_markup).
+         </documentation>
+      </annotation>
    </element>
 
    <annotation>

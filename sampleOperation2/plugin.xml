@@ -16,6 +16,9 @@
                </reference>
             </and>
       	</applicable>
+         <documentation>
+            Concatenates string objects.
+         </documentation>
       </operation>
    </extension>
 

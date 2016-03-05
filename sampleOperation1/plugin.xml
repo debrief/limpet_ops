@@ -16,6 +16,15 @@
                </reference>
             </and>
       	</applicable>
+         <documentation>
+            Add numbers operation. Some wiki formatting samples here:
+== Section headings ==
+&apos;&apos;Headings&apos;&apos; organize your writing into sections. 
+&apos;&apos;Unordered lists&apos;&apos; are easy to do:
+* Start every line with a star.
+** More stars indicate a deeper level.
+*: Previous item continues.
+         </documentation>
       </operation>
       <operation
             class="sampleoperation1.ConcatenateObjectsOperation"
@@ -26,15 +35,20 @@
                value="true">
          	</test>
          </applicable>
+         <documentation>
+            Concatenates objects. Acts on two numeric and one string values.
+         </documentation>
       </operation>
       <operation
-            class="sampleoperation1.ConcatenateObjectsOperation"
-            label="Operate on non-numeric selection">
+            class="sampleoperation1.ConcatenateObjectsOperation" label="Operate on non-numeric selection">            
          <applicable>
             <reference
                   definitionId="sampleModel.noNumbers">
             </reference>
          </applicable>
+         <documentation>
+            Concatenates non numeric objects.
+         </documentation>
       </operation>
       <operation
             class="sampleoperation1.SubtractNumbersOperation"
@@ -51,6 +65,9 @@
                </reference>
             </and>
          </applicable>
+         <documentation>
+            Subtract numbers operation.
+         </documentation>
       </operation>
       <operation
             class="sampleoperation1.DistanceFromOperation"
@@ -67,6 +84,9 @@
                </reference>
             </and>
          </applicable>
+         <documentation>
+            Calculates distance (difference) between numbers.
+         </documentation>
       </operation>
    </extension>
 
