@@ -66,5 +66,12 @@
             type="org.eclipse.jface.viewers.StructuredSelection">
       </propertyTester>
    </extension>
+   <extension
+         point="sampleModel.SampleModelOperation">
+      <category
+            id="sampleModel.operations.arithmetic"
+            name="Arithmetic operations">
+      </category>
+   </extension>
 
 </plugin>

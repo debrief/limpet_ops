@@ -1,7 +1,10 @@
 package samplemodel;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.expressions.ElementHandler;
 import org.eclipse.core.expressions.EvaluationContext;
@@ -23,22 +26,83 @@ public class SampleModelOperationRegistry
   public static final SampleModelOperationRegistry INSTANCE =
       new SampleModelOperationRegistry();
 
-  private IConfigurationElement[] configurationElements;
+  private OperationCategory operationCategoryRoot;
 
   private SampleModelOperationRegistry()
   {
 
   }
 
-  public IConfigurationElement[] getOperations()
+  OperationCategory getOperationCategoryRoot()
   {
-    if (configurationElements == null)
+
+    // lazy initialization
+    if (operationCategoryRoot == null)
     {
-      // lazy initialization
-      configurationElements = Platform.getExtensionRegistry()
-          .getConfigurationElementsFor("sampleModel.SampleModelOperation");
+
+      operationCategoryRoot = new OperationCategory();
+
+      // read all configuration elements and split them into categories/operations
+      IConfigurationElement[] configurationElements = Platform
+          .getExtensionRegistry().getConfigurationElementsFor(
+              "sampleModel.SampleModelOperation");
+
+      Map<String, OperationCategory> categories = new HashMap<>();
+      List<IConfigurationElement> operations =
+          new ArrayList<IConfigurationElement>();
+
+      for (IConfigurationElement element : configurationElements)
+      {
+        if ("category".equals(element.getName()))
+        {
+          String id = element.getAttribute("id");
+          if (!categories.containsKey(id))
+          {
+            String parentId = element.getAttribute("parentCategory");
+            String name = element.getAttribute("name");
+            categories.put(id, new OperationCategory(name, id, parentId));
+          }
+        }
+        else
+        {
+          operations.add(element);
+        }
+      }
+
+      // build a tree of categories
+      for (OperationCategory category : categories.values())
+      {
+        if (category.getParentId() == null)
+        {
+          // no parent, add in the root
+          operationCategoryRoot.addSubcategory(category);
+        }
+        else
+        {
+          OperationCategory parentCategory = categories.get(category
+              .getParentId());
+          parentCategory.addSubcategory(category);
+        }
+      }
+
+      // put operations into corresponding categories
+      for (IConfigurationElement operation : operations)
+      {
+        String categoryId = operation.getAttribute("category");
+        if (categoryId == null)
+        {
+          // no category, add in the root
+          operationCategoryRoot.addOperation(operation);
+        }
+        else
+        {
+          OperationCategory category = categories.get(categoryId);
+          category.addOperation(operation);
+        }
+      }
     }
-    return configurationElements;
+
+    return operationCategoryRoot;
   }
 
   /**
@@ -52,11 +116,17 @@ public class SampleModelOperationRegistry
       IOperationLibraryBuilder builder)
   {
 
-    final IConfigurationElement[] operations = getOperations();
+    OperationCategory operationCategoryRoot = getOperationCategoryRoot();
+    buildLibrary(selection, builder, operationCategoryRoot);
+  }
+
+  private void buildLibrary(IStructuredSelection selection,
+      IOperationLibraryBuilder builder, OperationCategory category)
+  {
 
     EvaluationContext context = new EvaluationContext(null, selection);
 
-    for (IConfigurationElement operation : operations)
+    for (IConfigurationElement operation : category.getOperations())
     {
       boolean applicable = isApplicable(operation, context);
 
@@ -71,7 +141,7 @@ public class SampleModelOperationRegistry
         {
           target = builder.buildGroupNode(label);
         }
-        
+
         String permutationLabel = operation.getAttribute("permutationLabel");
         if (permutationLabel != null)
         {
@@ -87,6 +157,13 @@ public class SampleModelOperationRegistry
       }
     }
 
+    // build subcategories
+    for (OperationCategory c : category.getSubcategories())
+    {
+      IOperationLibraryBuilder subcategoryBuilder = builder.buildGroupNode(c
+          .getName());
+      buildLibrary(selection, subcategoryBuilder, c);
+    }
   }
 
   private List<Object[]> getInputPermutations(final Object[] objects,

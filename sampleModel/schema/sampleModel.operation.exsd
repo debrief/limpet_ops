@@ -19,9 +19,10 @@
          </appinfo>
       </annotation>
       <complexType>
-         <sequence>
-            <element ref="operation" minOccurs="0" maxOccurs="unbounded"/>
-         </sequence>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="operation"/>
+            <element ref="category"/>
+         </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
@@ -95,6 +96,16 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="category" type="string">
+            <annotation>
+               <documentation>
+                  an optional category ID
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier" basedOn="sampleModel.SampleModelOperation/category/@id"/>
+               </appinfo>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
@@ -132,6 +143,39 @@
             Detailed documentation of the operation. HTML is supported.
          </documentation>
       </annotation>
+   </element>
+
+   <element name="category">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that will be used to identify this category
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name that will be used in the UI for this category
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="parentCategory" type="string">
+            <annotation>
+               <documentation>
+                  an optional path composed of category IDs separated by &apos;/&apos;. This
+allows the creation of a hierarchy of categories.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier" basedOn="sampleModel.SampleModelOperation/category/@id"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
    </element>
 
    <annotation>

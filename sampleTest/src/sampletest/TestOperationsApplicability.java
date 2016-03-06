@@ -28,8 +28,8 @@ public class TestOperationsApplicability
     StructuredSelection selection = new StructuredSelection(objects);
     SampleModelOperationRegistry.INSTANCE.buildLibrary(selection, builder);
 
-    Assert.assertTrue(builder.containsOperation(
-        "sampleoperation1.SubtractNumbersOperation"));
+    Assert.assertEquals("//Arithmetic operations//Subtract//", builder
+        .getOperationPath("sampleoperation1.SubtractNumbersOperation"));
 
     // negative test
     objects = new ArrayList<>();
@@ -41,7 +41,7 @@ public class TestOperationsApplicability
     selection = new StructuredSelection(objects);
     SampleModelOperationRegistry.INSTANCE.buildLibrary(selection, builder);
 
-    Assert.assertFalse(builder.containsOperation(
+    Assert.assertNull(builder.getOperationPath(
         "sampleoperation1.SubtractNumbersOperation"));
 
     // TODO: more negative tests here + can also assert the failure reason once it's in place

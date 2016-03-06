@@ -4,6 +4,7 @@
    <extension
          point="sampleModel.SampleModelOperation">
       <operation
+            category="sampleModel.operations.arithmetic"
             class="sampleoperation1.AddNumbersOperation"
             label="Add Numbers">         
          <applicable>
@@ -45,6 +46,7 @@
          </documentation>
       </operation>
       <operation
+            category="sampleModel.operations.arithmetic"
             class="sampleoperation1.SubtractNumbersOperation"
             inputPermutator="samplemodel.EachElementVersusTheRest"
             label="Subtract"
@@ -64,6 +66,7 @@
          </documentation>
       </operation>
       <operation
+            category="sampleOperation1.arithmetic.subcategory"
             class="sampleoperation1.DistanceFromOperation"
             inputPermutator="samplemodel.EachElementVersusTheRest"
             label="Distance"
@@ -82,6 +85,11 @@
             Calculates distance (difference) between numbers.
          </documentation>
       </operation>
+      <category
+            id="sampleOperation1.arithmetic.subcategory"
+            name="Subcategory Sample"
+            parentCategory="sampleModel.operations.arithmetic">
+      </category>
    </extension>
 
 </plugin>
