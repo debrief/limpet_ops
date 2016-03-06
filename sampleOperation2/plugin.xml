@@ -5,7 +5,8 @@
          point="sampleModel.SampleModelOperation">
       <operation
             class="sampleoperation2.ConcatenateStringsOperation"
-            label="Concatenate Strings">         
+            label="Concatenate Strings"
+            library="sampleModel.operations.string">         
          <applicable>
             <and>
                <count

@@ -68,10 +68,20 @@
    </extension>
    <extension
          point="sampleModel.SampleModelOperation">
-      <category
+      <library
             id="sampleModel.operations.arithmetic"
             name="Arithmetic operations">
-      </category>
+         <documentation>
+            A container for arithmetic operations
+         </documentation>
+      </library>
+      <library
+            id="sampleModel.operations.string"
+            name="String operations">
+         <documentation>
+            documentation body text
+         </documentation>
+      </library>
    </extension>
 
 </plugin>

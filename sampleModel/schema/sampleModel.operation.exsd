@@ -21,7 +21,7 @@
       <complexType>
          <choice minOccurs="0" maxOccurs="unbounded">
             <element ref="operation"/>
-            <element ref="category"/>
+            <element ref="library"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -96,13 +96,13 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="category" type="string">
+         <attribute name="library" type="string">
             <annotation>
                <documentation>
-                  an optional category ID
+                  an optional library ID
                </documentation>
                <appinfo>
-                  <meta.attribute kind="identifier" basedOn="sampleModel.SampleModelOperation/category/@id"/>
+                  <meta.attribute kind="identifier" basedOn="sampleModel.SampleModelOperation/library/@id"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -140,38 +140,40 @@
             <meta.element translatable="true"/>
          </appinfo>
          <documentation>
-            Detailed documentation of the operation. HTML is supported.
+            Detailed documentation of the operation/library. HTML is supported.
          </documentation>
       </annotation>
    </element>
 
-   <element name="category">
+   <element name="library">
       <complexType>
+         <sequence>
+            <element ref="documentation"/>
+         </sequence>
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
-                  a unique name that will be used to identify this category
+                  a unique name that will be used to identify this library
                </documentation>
             </annotation>
          </attribute>
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  a translatable name that will be used in the UI for this category
+                  a translatable name that will be used in the UI for this library
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="parentCategory" type="string">
+         <attribute name="parentLibrary" type="string">
             <annotation>
                <documentation>
-                  an optional path composed of category IDs separated by &apos;/&apos;. This
-allows the creation of a hierarchy of categories.
+                  an optional ID of a parent library. This allows the creation of a hierarchy of libraries.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="identifier" basedOn="sampleModel.SampleModelOperation/category/@id"/>
+                  <meta.attribute kind="identifier" basedOn="sampleModel.SampleModelOperation/library/@id"/>
                </appinfo>
             </annotation>
          </attribute>

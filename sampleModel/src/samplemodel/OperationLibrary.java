@@ -10,38 +10,38 @@ import org.eclipse.core.runtime.IConfigurationElement;
  * Helper representation of operation categories (besides IConfigurationElement) to allow building a
  * tree structure to represent in a menu
  */
-class OperationCategory
+class OperationLibrary
 {
 
   /**
-   * The name of the category
+   * The name of the library
    */
   private final String name;
 
   /**
-   * The id of the category
+   * The id of the library
    */
   private final String id;
 
   /**
-   * The id of the parent category, can be <code>null</code>
+   * The id of the parent library, can be <code>null</code>
    */
   private final String parentId;
 
-  private final List<OperationCategory> subcategories =
-      new ArrayList<OperationCategory>();
+  private final List<OperationLibrary> libraries =
+      new ArrayList<OperationLibrary>();
   private final List<IConfigurationElement> operations =
       new ArrayList<IConfigurationElement>();
 
   /**
-   * Construct a root category
+   * Construct a root library, the root library does not have a representation in the UI
    */
-  OperationCategory()
+  OperationLibrary()
   {
     this(null, null, null);
   }
 
-  OperationCategory(String name, String id, String parentId)
+  OperationLibrary(String name, String id, String parentId)
   {
     this.name = name;
     this.id = id;
@@ -58,9 +58,9 @@ class OperationCategory
     return id;
   }
 
-  public void addSubcategory(OperationCategory category)
+  public void addLibrary(OperationLibrary library)
   {
-    subcategories.add(category);
+    libraries.add(library);
   }
 
   public void addOperation(IConfigurationElement operation)
@@ -73,9 +73,9 @@ class OperationCategory
     return parentId;
   }
 
-  public List<OperationCategory> getSubcategories()
+  public List<OperationLibrary> getLibraries()
   {
-    return Collections.unmodifiableList(subcategories);
+    return Collections.unmodifiableList(libraries);
   }
 
   public List<IConfigurationElement> getOperations()

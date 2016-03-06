@@ -26,41 +26,41 @@ public class SampleModelOperationRegistry
   public static final SampleModelOperationRegistry INSTANCE =
       new SampleModelOperationRegistry();
 
-  private OperationCategory operationCategoryRoot;
+  private OperationLibrary operationLibraryRoot;
 
   private SampleModelOperationRegistry()
   {
 
   }
 
-  OperationCategory getOperationCategoryRoot()
+  OperationLibrary getOperationLibraryRoot()
   {
 
     // lazy initialization
-    if (operationCategoryRoot == null)
+    if (operationLibraryRoot == null)
     {
 
-      operationCategoryRoot = new OperationCategory();
+      operationLibraryRoot = new OperationLibrary();
 
-      // read all configuration elements and split them into categories/operations
+      // read all configuration elements and split them into libraries/operations
       IConfigurationElement[] configurationElements = Platform
           .getExtensionRegistry().getConfigurationElementsFor(
               "sampleModel.SampleModelOperation");
 
-      Map<String, OperationCategory> categories = new HashMap<>();
+      Map<String, OperationLibrary> libraries = new HashMap<>();
       List<IConfigurationElement> operations =
           new ArrayList<IConfigurationElement>();
 
       for (IConfigurationElement element : configurationElements)
       {
-        if ("category".equals(element.getName()))
+        if ("library".equals(element.getName()))
         {
           String id = element.getAttribute("id");
-          if (!categories.containsKey(id))
+          if (!libraries.containsKey(id))
           {
-            String parentId = element.getAttribute("parentCategory");
+            String parentId = element.getAttribute("parentLibrary");
             String name = element.getAttribute("name");
-            categories.put(id, new OperationCategory(name, id, parentId));
+            libraries.put(id, new OperationLibrary(name, id, parentId));
           }
         }
         else
@@ -69,40 +69,40 @@ public class SampleModelOperationRegistry
         }
       }
 
-      // build a tree of categories
-      for (OperationCategory category : categories.values())
+      // build a tree of libraries
+      for (OperationLibrary library : libraries.values())
       {
-        if (category.getParentId() == null)
+        if (library.getParentId() == null)
         {
           // no parent, add in the root
-          operationCategoryRoot.addSubcategory(category);
+          operationLibraryRoot.addLibrary(library);
         }
         else
         {
-          OperationCategory parentCategory = categories.get(category
+          OperationLibrary parentCategory = libraries.get(library
               .getParentId());
-          parentCategory.addSubcategory(category);
+          parentCategory.addLibrary(library);
         }
       }
 
-      // put operations into corresponding categories
+      // put operations into corresponding libraries
       for (IConfigurationElement operation : operations)
       {
-        String categoryId = operation.getAttribute("category");
+        String categoryId = operation.getAttribute("library");
         if (categoryId == null)
         {
-          // no category, add in the root
-          operationCategoryRoot.addOperation(operation);
+          // no library, add in the root
+          operationLibraryRoot.addOperation(operation);
         }
         else
         {
-          OperationCategory category = categories.get(categoryId);
-          category.addOperation(operation);
+          OperationLibrary library = libraries.get(categoryId);
+          library.addOperation(operation);
         }
       }
     }
 
-    return operationCategoryRoot;
+    return operationLibraryRoot;
   }
 
   /**
@@ -116,17 +116,17 @@ public class SampleModelOperationRegistry
       IOperationLibraryBuilder builder)
   {
 
-    OperationCategory operationCategoryRoot = getOperationCategoryRoot();
-    buildLibrary(selection, builder, operationCategoryRoot);
+    OperationLibrary operationLibraryRoot = getOperationLibraryRoot();
+    buildLibrary(selection, builder, operationLibraryRoot);
   }
 
   private void buildLibrary(IStructuredSelection selection,
-      IOperationLibraryBuilder builder, OperationCategory category)
+      IOperationLibraryBuilder builder, OperationLibrary library)
   {
 
     EvaluationContext context = new EvaluationContext(null, selection);
 
-    for (IConfigurationElement operation : category.getOperations())
+    for (IConfigurationElement operation : library.getOperations())
     {
       boolean applicable = isApplicable(operation, context);
 
@@ -157,12 +157,12 @@ public class SampleModelOperationRegistry
       }
     }
 
-    // build subcategories
-    for (OperationCategory c : category.getSubcategories())
+    // build sub libraries
+    for (OperationLibrary c : library.getLibraries())
     {
-      IOperationLibraryBuilder subcategoryBuilder = builder.buildGroupNode(c
+      IOperationLibraryBuilder sublibraryBuilder = builder.buildGroupNode(c
           .getName());
-      buildLibrary(selection, subcategoryBuilder, c);
+      buildLibrary(selection, sublibraryBuilder, c);
     }
   }
 

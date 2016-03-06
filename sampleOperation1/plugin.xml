@@ -4,7 +4,7 @@
    <extension
          point="sampleModel.SampleModelOperation">
       <operation
-            category="sampleModel.operations.arithmetic"
+            library="sampleModel.operations.arithmetic"
             class="sampleoperation1.AddNumbersOperation"
             label="Add Numbers">         
          <applicable>
@@ -46,10 +46,10 @@
          </documentation>
       </operation>
       <operation
-            category="sampleModel.operations.arithmetic"
             class="sampleoperation1.SubtractNumbersOperation"
             inputPermutator="samplemodel.EachElementVersusTheRest"
             label="Subtract"
+            library="sampleModel.operations.arithmetic"
             permutationLabel="{1} from {0}">
          <applicable>
             <and>
@@ -66,10 +66,10 @@
          </documentation>
       </operation>
       <operation
-            category="sampleOperation1.arithmetic.subcategory"
             class="sampleoperation1.DistanceFromOperation"
             inputPermutator="samplemodel.EachElementVersusTheRest"
             label="Distance"
+            library="sampleOperation1.arithmetic.sublibrary"
             permutationLabel="from {0}">
          <applicable>
             <and>
@@ -85,11 +85,14 @@
             Calculates distance (difference) between numbers.
          </documentation>
       </operation>
-      <category
-            id="sampleOperation1.arithmetic.subcategory"
-            name="Subcategory Sample"
-            parentCategory="sampleModel.operations.arithmetic">
-      </category>
+      <library
+            id="sampleOperation1.arithmetic.sublibrary"
+            name="Sublibrary Sample"
+            parentLibrary="sampleModel.operations.arithmetic">
+         <documentation>
+            documentation body text
+         </documentation>
+      </library>
    </extension>
 
 </plugin>
