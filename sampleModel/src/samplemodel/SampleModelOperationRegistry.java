@@ -43,8 +43,8 @@ public class SampleModelOperationRegistry
       operationLibraryRoot = new OperationLibrary();
 
       // read all configuration elements and split them into libraries/operations
-      IConfigurationElement[] configurationElements = Platform
-          .getExtensionRegistry().getConfigurationElementsFor(
+      IConfigurationElement[] configurationElements =
+          Platform.getExtensionRegistry().getConfigurationElementsFor(
               "sampleModel.SampleModelOperation");
 
       Map<String, OperationLibrary> libraries = new HashMap<>();
@@ -79,8 +79,8 @@ public class SampleModelOperationRegistry
         }
         else
         {
-          OperationLibrary parentCategory = libraries.get(library
-              .getParentId());
+          OperationLibrary parentCategory =
+              libraries.get(library.getParentId());
           parentCategory.addLibrary(library);
         }
       }
@@ -130,11 +130,12 @@ public class SampleModelOperationRegistry
     {
       boolean applicable = isApplicable(operation, context);
 
+      String label = operation.getAttribute("label");
+
       if (applicable)
       {
-        final List<Object[]> inputPermutations = getInputPermutations(selection
-            .toArray(), operation);
-        String label = operation.getAttribute("label");
+        final List<Object[]> inputPermutations =
+            getInputPermutations(selection.toArray(), operation);
 
         IOperationLibraryBuilder target = builder;
         if (inputPermutations.size() > 1)
@@ -155,13 +156,19 @@ public class SampleModelOperationRegistry
         }
 
       }
+      else
+      {
+        System.out.println("\"" + label + "\" is not applicable: "
+            + CustomElementHandler.getDefault().getLog());
+        CustomElementHandler.getDefault().resetLog();
+      }
     }
 
     // build sub libraries
     for (OperationLibrary c : library.getLibraries())
     {
-      IOperationLibraryBuilder sublibraryBuilder = builder.buildGroupNode(c
-          .getName());
+      IOperationLibraryBuilder sublibraryBuilder =
+          builder.buildGroupNode(c.getName());
       buildLibrary(selection, sublibraryBuilder, c);
     }
   }
@@ -176,8 +183,9 @@ public class SampleModelOperationRegistry
       // a non-commutative operation, i.e. a+b=b+a
       try
       {
-        inputPermutator = (OperationInputPermutator) operation
-            .createExecutableExtension("inputPermutator");
+        inputPermutator =
+            (OperationInputPermutator) operation
+                .createExecutableExtension("inputPermutator");
       }
       catch (CoreException e)
       {
@@ -194,15 +202,17 @@ public class SampleModelOperationRegistry
 
     IConfigurationElement[] children = configElement.getChildren("applicable");
 
-    final ElementHandler elementHandler = ElementHandler.getDefault();
-    final ExpressionConverter converter = ExpressionConverter.getDefault();
+    final ElementHandler elementHandler = CustomElementHandler.getDefault();
+    final ExpressionConverter converter =
+        new ExpressionConverter(new ElementHandler[]
+        {elementHandler});
 
     if (children.length > 0)
     {
       IConfigurationElement applicableElement = children[0];
 
-      final IConfigurationElement[] expressionElements = applicableElement
-          .getChildren();
+      final IConfigurationElement[] expressionElements =
+          applicableElement.getChildren();
       if (expressionElements.length > 0)
       {
 
@@ -210,10 +220,11 @@ public class SampleModelOperationRegistry
 
         try
         {
-          Expression applicableExpression = elementHandler.create(converter,
-              expressionElement);
-          applicable = applicableExpression.evaluate(evaluationContext).equals(
-              EvaluationResult.TRUE);
+          Expression applicableExpression =
+              elementHandler.create(converter, expressionElement);
+          applicable =
+              applicableExpression.evaluate(evaluationContext).equals(
+                  EvaluationResult.TRUE);
         }
         catch (CoreException e)
         {

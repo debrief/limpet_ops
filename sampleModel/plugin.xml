@@ -20,13 +20,14 @@
       <definition
             id="sampleModel.allString">
          <iterate
-               operator="and">
+               operator="and" failMessage="All should be instanceof sample model and not be numeric">
             <instanceof
-                  value="samplemodel.SampleModel">
+                  value="samplemodel.SampleModel" failMessage="Should be instanceof sample model">
             </instanceof>
             <test
                   property="sampleModel.numeric"
-                  value="false">
+                  value="false"
+                  failMessage="Should not be numeric">
             </test>
          </iterate>
       </definition>
