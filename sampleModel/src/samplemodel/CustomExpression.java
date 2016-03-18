@@ -25,12 +25,17 @@ public class CustomExpression extends Expression
   public EvaluationResult evaluate(IEvaluationContext context)
       throws CoreException
   {
-    EvaluationResult result = wrapped.evaluate(context);
-    if (result == EvaluationResult.FALSE && failMessage != null)
-    {
-      logger.log(failMessage);
+    try {
+      logger.pushIndent();
+      EvaluationResult result = wrapped.evaluate(context);
+      if (result == EvaluationResult.FALSE && failMessage != null)
+      {
+        logger.log(failMessage);
+      }
+      return result;
+    } finally {
+      logger.popIndent();
     }
-    return result;
   }
 
   @Override

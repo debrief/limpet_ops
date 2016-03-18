@@ -158,8 +158,12 @@ public class SampleModelOperationRegistry
       }
       else
       {
-        System.out.println("\"" + label + "\" is not applicable: "
-            + CustomElementHandler.getDefault().getLog());
+        String log = CustomElementHandler.getDefault().getLog();
+        if (!log.isEmpty())
+        {
+          System.out.println("\"" + label + "\" is not applicable: ");
+          System.out.println(log);
+        }
         CustomElementHandler.getDefault().resetLog();
       }
     }

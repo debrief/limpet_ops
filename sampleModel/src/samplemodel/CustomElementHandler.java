@@ -1,18 +1,16 @@
 package samplemodel;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.expressions.ExpressionConverter;
 import org.eclipse.core.expressions.ExpressionTagNames;
 import org.eclipse.core.internal.expressions.DefinitionRegistry;
-import org.eclipse.core.internal.expressions.ExpressionMessages;
-import org.eclipse.core.internal.expressions.ExpressionStatus;
-import org.eclipse.core.internal.expressions.Messages;
 import org.eclipse.core.internal.expressions.StandardElementHandler;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.InvalidRegistryObjectException;
-import org.eclipse.core.runtime.Platform;
 import org.w3c.dom.Element;
 
 public class CustomElementHandler extends StandardElementHandler implements
@@ -81,22 +79,54 @@ public class CustomElementHandler extends StandardElementHandler implements
     return expression;
   }
 
-  private StringBuilder log = new StringBuilder();
+  private List<String> log = new ArrayList<String>();
+  private int logIndent = 0;
+  private int mark = -1;
 
   @Override
   public void log(String message)
   {
-    log.append(message);
-    log.append("\n");
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < logIndent; i++)
+    {
+      sb.append("  ");
+    }
+    sb.append(message);
+
+    log.add(sb.toString());
+
   }
 
   public String getLog()
   {
-    return log.toString();
+    StringBuilder sb = new StringBuilder();
+    for (String s : log)
+    {
+      sb.append(s).append("\n");
+    }
+    return sb.toString();
   }
 
   public void resetLog()
   {
-    log = new StringBuilder();
+    log.clear();
+  }
+
+  @Override
+  public void pushIndent()
+  {
+    logIndent++;
+    mark = log.size();
+  }
+
+  @Override
+  public void popIndent()
+  {
+    logIndent--;
+    if (log.size() > mark)
+    {
+      List<String> sublist = log.subList(mark, log.size());
+      Collections.reverse(sublist);
+    }
   }
 }
