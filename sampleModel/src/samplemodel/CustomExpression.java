@@ -26,7 +26,7 @@ public class CustomExpression extends Expression
       throws CoreException
   {
     try {
-      logger.pushIndent();
+      logger.pushNode();
       EvaluationResult result = wrapped.evaluate(context);
       if (result == EvaluationResult.FALSE && failMessage != null)
       {
@@ -34,7 +34,7 @@ public class CustomExpression extends Expression
       }
       return result;
     } finally {
-      logger.popIndent();
+      logger.popNode();
     }
   }
 

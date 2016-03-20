@@ -1,9 +1,5 @@
 package samplemodel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.expressions.ExpressionConverter;
 import org.eclipse.core.expressions.ExpressionTagNames;
@@ -32,6 +28,11 @@ public class CustomElementHandler extends StandardElementHandler implements
 
   private static final CustomElementHandler INSTANCE =
       new CustomElementHandler();
+
+  private CustomElementHandler()
+  {
+    resetLog();
+  }
 
   public static CustomElementHandler getDefault()
   {
@@ -79,54 +80,39 @@ public class CustomElementHandler extends StandardElementHandler implements
     return expression;
   }
 
-  private List<String> log = new ArrayList<String>();
-  private int logIndent = 0;
-  private int mark = -1;
+  private LoggerNode rootNode;
+  private LoggerNode currentNode;
 
   @Override
   public void log(String message)
   {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < logIndent; i++)
-    {
-      sb.append("  ");
-    }
-    sb.append(message);
-
-    log.add(sb.toString());
-
-  }
-
-  public String getLog()
-  {
-    StringBuilder sb = new StringBuilder();
-    for (String s : log)
-    {
-      sb.append(s).append("\n");
-    }
-    return sb.toString();
+    currentNode.setMessage(message);
   }
 
   public void resetLog()
   {
-    log.clear();
+    rootNode = new LoggerNode();
+    currentNode = rootNode;
   }
 
   @Override
-  public void pushIndent()
+  public void pushNode()
   {
-    logIndent++;
-    mark = log.size();
+    LoggerNode nextNode = new LoggerNode();
+    currentNode.getChildren().add(nextNode);
+    nextNode.setParent(currentNode);
+    currentNode = nextNode;
   }
 
   @Override
-  public void popIndent()
+  public void popNode()
   {
-    logIndent--;
-    if (log.size() > mark)
-    {
-      List<String> sublist = log.subList(mark, log.size());
-      Collections.reverse(sublist);
-    }
+    currentNode = currentNode.getParent();
+  }
+
+  @Override
+  public LoggerNode getRootNode()
+  {
+    return rootNode;
   }
 }
