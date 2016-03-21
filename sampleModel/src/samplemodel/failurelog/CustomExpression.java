@@ -1,4 +1,4 @@
-package samplemodel;
+package samplemodel.failurelog;
 
 import org.eclipse.core.expressions.EvaluationResult;
 import org.eclipse.core.expressions.Expression;
@@ -6,15 +6,21 @@ import org.eclipse.core.expressions.ExpressionInfo;
 import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.core.runtime.CoreException;
 
+/**
+ * A {@link CustomExpression} will log the result of the evaluation. If result is
+ * {@link EvaluationResult#FALSE}, then the {@link #failMessage} will be logged using the
+ * {@link ExpressionLogger}
+ * 
+ */
 public class CustomExpression extends Expression
 {
 
   private final Expression wrapped;
   private final String failMessage;
-  private CustomLogger logger;
+  private ExpressionLogger logger;
 
   public CustomExpression(Expression wrapped, String failMessage,
-      CustomLogger logger)
+      ExpressionLogger logger)
   {
     this.wrapped = wrapped;
     this.failMessage = failMessage;
@@ -25,7 +31,8 @@ public class CustomExpression extends Expression
   public EvaluationResult evaluate(IEvaluationContext context)
       throws CoreException
   {
-    try {
+    try
+    {
       logger.pushNode();
       EvaluationResult result = wrapped.evaluate(context);
       if (result == EvaluationResult.FALSE && failMessage != null)
@@ -33,7 +40,9 @@ public class CustomExpression extends Expression
         logger.log(failMessage);
       }
       return result;
-    } finally {
+    }
+    finally
+    {
       logger.popNode();
     }
   }

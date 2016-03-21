@@ -1,4 +1,4 @@
-package samplemodel;
+package samplemodel.failurelog;
 
 import org.eclipse.core.expressions.EvaluationResult;
 import org.eclipse.core.expressions.Expression;
@@ -12,6 +12,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.w3c.dom.Element;
 
+/**
+ * We provide a separate copy of the {@link ReferenceExpression}, since we need to use a
+ * {@link CustomDefinitionRegistry}, instead of the default one ({@link DefinitionRegistry}). Since
+ * the {@link ReferenceExpression} is not designed for extension, implementation is copied here.
+ * 
+ */
 public class CustomReferenceExpression extends Expression
 {
 

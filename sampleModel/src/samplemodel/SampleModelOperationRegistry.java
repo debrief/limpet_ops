@@ -17,6 +17,8 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
+import samplemodel.failurelog.CustomElementHandler;
+
 /**
  * A singleton providing convenience methods to obtain contributed model operations and to build a
  * library (i.e. menu) of operations
@@ -43,8 +45,8 @@ public class SampleModelOperationRegistry
       operationLibraryRoot = new OperationLibrary();
 
       // read all configuration elements and split them into libraries/operations
-      IConfigurationElement[] configurationElements = Platform
-          .getExtensionRegistry().getConfigurationElementsFor(
+      IConfigurationElement[] configurationElements =
+          Platform.getExtensionRegistry().getConfigurationElementsFor(
               "sampleModel.SampleModelOperation");
 
       Map<String, OperationLibrary> libraries = new HashMap<>();
@@ -79,8 +81,8 @@ public class SampleModelOperationRegistry
         }
         else
         {
-          OperationLibrary parentCategory = libraries.get(library
-              .getParentId());
+          OperationLibrary parentCategory =
+              libraries.get(library.getParentId());
           parentCategory.addLibrary(library);
         }
       }
@@ -134,8 +136,8 @@ public class SampleModelOperationRegistry
 
       if (applicable)
       {
-        final List<Object[]> inputPermutations = getInputPermutations(selection
-            .toArray(), operation);
+        final List<Object[]> inputPermutations =
+            getInputPermutations(selection.toArray(), operation);
 
         IOperationLibraryBuilder target = builder;
         if (inputPermutations.size() > 1)
@@ -158,11 +160,11 @@ public class SampleModelOperationRegistry
       }
       else
       {
-        LoggerNode rootNode = CustomElementHandler.getDefault().getRootNode();
-        if (rootNode.hasMessage())
+        String log = CustomElementHandler.getDefault().getLog();
+        if (!log.isEmpty())
         {
-          System.out.println("\"" + label + "\" is not applicable: ");
-          System.out.println(rootNode.log(0));
+          System.out.println("[" + label + "] failed because of:");
+          System.out.println(log);
         }
         CustomElementHandler.getDefault().resetLog();
       }
@@ -171,8 +173,8 @@ public class SampleModelOperationRegistry
     // build sub libraries
     for (OperationLibrary c : library.getLibraries())
     {
-      IOperationLibraryBuilder sublibraryBuilder = builder.buildGroupNode(c
-          .getName());
+      IOperationLibraryBuilder sublibraryBuilder =
+          builder.buildGroupNode(c.getName());
       buildLibrary(selection, sublibraryBuilder, c);
     }
   }
@@ -187,8 +189,9 @@ public class SampleModelOperationRegistry
       // a non-commutative operation, i.e. a+b=b+a
       try
       {
-        inputPermutator = (OperationInputPermutator) operation
-            .createExecutableExtension("inputPermutator");
+        inputPermutator =
+            (OperationInputPermutator) operation
+                .createExecutableExtension("inputPermutator");
       }
       catch (CoreException e)
       {
@@ -206,16 +209,16 @@ public class SampleModelOperationRegistry
     IConfigurationElement[] children = configElement.getChildren("applicable");
 
     final ElementHandler elementHandler = CustomElementHandler.getDefault();
-    final ExpressionConverter converter = new ExpressionConverter(
-        new ElementHandler[]
-    {elementHandler});
+    final ExpressionConverter converter =
+        new ExpressionConverter(new ElementHandler[]
+        {elementHandler});
 
     if (children.length > 0)
     {
       IConfigurationElement applicableElement = children[0];
 
-      final IConfigurationElement[] expressionElements = applicableElement
-          .getChildren();
+      final IConfigurationElement[] expressionElements =
+          applicableElement.getChildren();
       if (expressionElements.length > 0)
       {
 
@@ -223,10 +226,11 @@ public class SampleModelOperationRegistry
 
         try
         {
-          Expression applicableExpression = elementHandler.create(converter,
-              expressionElement);
-          applicable = applicableExpression.evaluate(evaluationContext).equals(
-              EvaluationResult.TRUE);
+          Expression applicableExpression =
+              elementHandler.create(converter, expressionElement);
+          applicable =
+              applicableExpression.evaluate(evaluationContext).equals(
+                  EvaluationResult.TRUE);
         }
         catch (CoreException e)
         {

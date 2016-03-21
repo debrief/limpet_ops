@@ -1,4 +1,4 @@
-package samplemodel;
+package samplemodel.failurelog;
 
 import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.expressions.ExpressionConverter;
@@ -9,12 +9,17 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.w3c.dom.Element;
 
+/**
+ * Extends the {@link StandardElementHandler} and wraps the created {@link Expression}s in
+ * {@link CustomExpression}s. During creation, the <code>failMessage</code> is read from the config
+ * and passed to the {@link CustomExpression}.
+ * 
+ * @see CustomExpression
+ */
 public class CustomElementHandler extends StandardElementHandler implements
-    CustomLogger
+    ExpressionLogger
 {
 
-  // consider making this a more general extension manager
-  // for now it's just part of the reference expression
   private static DefinitionRegistry fgDefinitionRegistry = null;
 
   private static DefinitionRegistry getDefinitionRegistry()
@@ -80,6 +85,10 @@ public class CustomElementHandler extends StandardElementHandler implements
     return expression;
   }
 
+  /**
+   * {@link ExpressionLogger} implementation
+   */
+  
   private LoggerNode rootNode;
   private LoggerNode currentNode;
 
@@ -111,8 +120,8 @@ public class CustomElementHandler extends StandardElementHandler implements
   }
 
   @Override
-  public LoggerNode getRootNode()
+  public String getLog()
   {
-    return rootNode;
+    return rootNode.log(0);
   }
 }

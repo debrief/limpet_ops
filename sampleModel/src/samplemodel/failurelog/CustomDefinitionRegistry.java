@@ -1,4 +1,4 @@
-package samplemodel;
+package samplemodel.failurelog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +18,14 @@ import org.eclipse.core.runtime.IRegistryChangeEvent;
 import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
 
+/**
+ * An extension of the {@link DefinitionRegistry}, that uses the {@link CustomElementHandler} class
+ * to create elements. The superclass implementation has been copied here, since it was not designed
+ * for extension (private methods). The main difference is in
+ * {@link #getExpression(String, IConfigurationElement)} method - there we use the
+ * {@link CustomElementHandler}.
+ * 
+ */
 public class CustomDefinitionRegistry extends DefinitionRegistry
 {
   private Map cache = null;
