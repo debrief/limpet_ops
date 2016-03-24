@@ -2,8 +2,8 @@ package sampleview.views.opsbrowser;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 
-import samplemodel.IOperationsBrowserLibraryBuilder;
 import samplemodel.IOperationLibraryBuilder;
+import samplemodel.IOperationsBrowserLibraryBuilder;
 
 public class OperationsBrowserTreeBuilder implements
     IOperationsBrowserLibraryBuilder
@@ -29,17 +29,21 @@ public class OperationsBrowserTreeBuilder implements
   public void buildOperationNode(Object[] selection, String operationName,
       IConfigurationElement operationDescriptor)
   {
-    buildOperationNode(selection, operationName, operationDescriptor, null);
+    buildOperationNode(selection, operationName, operationDescriptor, true,
+        null);
   }
 
   @Override
-  public void buildOperationNode(Object[] selection, String operationName,
-      IConfigurationElement operationDescriptor, String log)
+  public void
+      buildOperationNode(Object[] selection, String operationName,
+          IConfigurationElement operationDescriptor, boolean applicable,
+          String log)
   {
     String documentation =
         operationDescriptor.getChildren("documentation")[0].getValue();
     OperationsBrowserOpNode operationNode =
-        new OperationsBrowserOpNode(operationName, documentation, log);
+        new OperationsBrowserOpNode(operationName, documentation, applicable,
+            log);
     node.addChild(operationNode);
   }
 

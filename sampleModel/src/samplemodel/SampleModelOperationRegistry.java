@@ -143,15 +143,8 @@ public class SampleModelOperationRegistry
         IOperationsBrowserLibraryBuilder libraryBuilder =
             (IOperationsBrowserLibraryBuilder) builder;
 
-        String failMessage =
-            applicable ? null : CustomElementHandler.getDefault().getLog();
-        if (failMessage.isEmpty())
-        {
-          failMessage = null;
-        }
-
         libraryBuilder.buildOperationNode(selection.toArray(), label,
-            operation, failMessage);
+            operation, applicable, CustomElementHandler.getDefault().getLog());
         CustomElementHandler.getDefault().resetLog();
 
       }

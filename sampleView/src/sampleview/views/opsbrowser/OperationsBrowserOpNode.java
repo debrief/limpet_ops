@@ -4,11 +4,13 @@ public class OperationsBrowserOpNode extends OperationsBrowserTreeNode
 {
 
   private final String failMessage;
+  private final boolean applicable;
 
   public OperationsBrowserOpNode(String name, String documentation,
-      String failMessage)
+      boolean applicable, String failMessage)
   {
     super(name, documentation);
+    this.applicable = applicable;
     this.failMessage = failMessage;
   }
 
@@ -21,6 +23,11 @@ public class OperationsBrowserOpNode extends OperationsBrowserTreeNode
   public String getFailMessage()
   {
     return failMessage;
+  }
+
+  public boolean isApplicable()
+  {
+    return applicable;
   }
 
 }
