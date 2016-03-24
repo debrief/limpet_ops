@@ -14,6 +14,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
 import samplemodel.SampleModel;
@@ -56,6 +58,8 @@ public class SampleView extends ViewPart
     viewer.setInput(myData);
 
     hookContextMenu();
+
+    getSite().setSelectionProvider(viewer);
   }
 
   private List<Object> createSampleData()

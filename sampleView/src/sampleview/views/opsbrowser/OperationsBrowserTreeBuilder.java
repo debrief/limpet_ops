@@ -17,9 +17,10 @@ public class OperationsBrowserTreeBuilder implements
   }
 
   @Override
-  public IOperationLibraryBuilder buildGroupNode(String name)
+  public IOperationLibraryBuilder buildGroupNode(String name, String details)
   {
-    OperationsBrowserTreeNode child = new OperationsBrowserTreeNode(name);
+    OperationsBrowserTreeNode child =
+        new OperationsBrowserTreeNode(name, details);
     node.addChild(child);
     return new OperationsBrowserTreeBuilder(child);
   }
@@ -35,8 +36,10 @@ public class OperationsBrowserTreeBuilder implements
   public void buildOperationNode(Object[] selection, String operationName,
       IConfigurationElement operationDescriptor, String log)
   {
-    OperationsBrowserOpNode operationNode = new OperationsBrowserOpNode(
-        operationName, log);
+    String documentation =
+        operationDescriptor.getChildren("documentation")[0].getValue();
+    OperationsBrowserOpNode operationNode =
+        new OperationsBrowserOpNode(operationName, documentation, log);
     node.addChild(operationNode);
   }
 

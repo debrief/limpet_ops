@@ -27,7 +27,9 @@ class OperationLibrary
    * The id of the parent library, can be <code>null</code>
    */
   private final String parentId;
-
+  
+  private final String documentation;
+  
   private final List<OperationLibrary> libraries =
       new ArrayList<OperationLibrary>();
   private final List<IConfigurationElement> operations =
@@ -38,14 +40,15 @@ class OperationLibrary
    */
   OperationLibrary()
   {
-    this(null, null, null);
+    this(null, null, null, null);
   }
 
-  OperationLibrary(String name, String id, String parentId)
+  OperationLibrary(String name, String id, String parentId, String documentation)
   {
     this.name = name;
     this.id = id;
     this.parentId = parentId;
+    this.documentation = documentation;
   }
 
   public String getName()
@@ -81,5 +84,10 @@ class OperationLibrary
   public List<IConfigurationElement> getOperations()
   {
     return Collections.unmodifiableList(operations);
+  }
+
+  public String getDocumentation()
+  {
+    return documentation;
   }
 }

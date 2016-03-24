@@ -8,10 +8,12 @@ public class OperationsBrowserTreeNode
 
   private List<OperationsBrowserTreeNode> children = new ArrayList<>();
   private final String name;
+  private final String documentation;
 
-  public OperationsBrowserTreeNode(String name)
+  public OperationsBrowserTreeNode(String name, String documentation)
   {
     this.name = name;
+    this.documentation = documentation;
   }
 
   public void addChild(OperationsBrowserTreeNode child)
@@ -29,6 +31,11 @@ public class OperationsBrowserTreeNode
   public String getName()
   {
     return name;
+  }
+
+  public String getDocumentation()
+  {
+    return documentation;
   }
 
 }

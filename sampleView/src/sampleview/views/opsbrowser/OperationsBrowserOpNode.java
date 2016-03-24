@@ -5,9 +5,10 @@ public class OperationsBrowserOpNode extends OperationsBrowserTreeNode
 
   private final String failMessage;
 
-  public OperationsBrowserOpNode(String name, String failMessage)
+  public OperationsBrowserOpNode(String name, String documentation,
+      String failMessage)
   {
-    super(name);
+    super(name, documentation);
     this.failMessage = failMessage;
   }
 

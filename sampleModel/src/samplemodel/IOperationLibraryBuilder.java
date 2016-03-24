@@ -14,7 +14,7 @@ public interface IOperationLibraryBuilder
    * @param name
    * @return
    */
-  IOperationLibraryBuilder buildGroupNode(String name);
+  IOperationLibraryBuilder buildGroupNode(String name, String details);
 
   /**
    * @param selection
