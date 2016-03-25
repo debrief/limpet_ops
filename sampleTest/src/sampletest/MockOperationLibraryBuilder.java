@@ -31,7 +31,7 @@ public class MockOperationLibraryBuilder implements IOperationLibraryBuilder
   }
 
   @Override
-  public IOperationLibraryBuilder buildGroupNode(String name)
+  public IOperationLibraryBuilder buildGroupNode(String name, String details)
   {
     path = path + name + SEPARATOR;
     return this;

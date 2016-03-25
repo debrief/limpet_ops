@@ -30,7 +30,7 @@ public class OperationLibraryMenuBuilder implements IOperationLibraryBuilder
   }
 
   @Override
-  public IOperationLibraryBuilder buildGroupNode(String name)
+  public IOperationLibraryBuilder buildGroupNode(String name, String details)
   {
     MenuManager submenu = new MenuManager(name);
     menuManager.add(submenu);

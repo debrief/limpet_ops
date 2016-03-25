@@ -27,7 +27,8 @@
          <applicable>
            <test
                property="sampleModel.2numbers1string"
-               value="true">
+               value="true"
+               failMessage="Should be 2 numbers and 1 string">
          	</test>
          </applicable>
          <documentation>
