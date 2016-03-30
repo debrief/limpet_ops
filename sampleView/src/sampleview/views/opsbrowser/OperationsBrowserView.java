@@ -30,10 +30,9 @@ import sampleview.views.SampleView;
 /**
  * Things that might be improved:
  * <ul>
- * <li>Use horizontal splitters to separate the viewer/browser/text control and allow re-adjusting
- * the size
- * <li>Present the Applicability Test Output as a tree
  * <li>Avoid expand all, try to preserve the selection (only keep the current node expanded)
+ * <li>Present the Applicability Test Output as a tree
+ * <li>Show "No applicable operations" text instead of an empty tree viewer
  * </ul>
  * 
  */
@@ -132,16 +131,16 @@ public class OperationsBrowserView extends ViewPart
     new Label(parent, SWT.NONE).setText("Documentation:");
 
     documentationBrowser = new Browser(parent, SWT.NONE);
-    GridDataFactory.fillDefaults().grab(true, true).applyTo(
-        documentationBrowser);
+    GridDataFactory.fillDefaults().grab(true, false).hint(SWT.DEFAULT, 80)
+        .applyTo(documentationBrowser);
 
     new Label(parent, SWT.NONE).setText("Applicability Test Output:");
     applicabilityTestOutputText = new Text(parent, SWT.V_SCROLL | SWT.H_SCROLL);
     applicabilityTestOutputText.setEditable(false);
     applicabilityTestOutputText.setBackground(parent.getShell().getDisplay()
         .getSystemColor(SWT.COLOR_LIST_BACKGROUND));
-    GridDataFactory.fillDefaults().grab(true, true).applyTo(
-        applicabilityTestOutputText);
+    GridDataFactory.fillDefaults().grab(true, false).hint(SWT.DEFAULT, 80)
+        .applyTo(applicabilityTestOutputText);
 
     updateViewer(new StructuredSelection());
     filterSelector.select(0);
@@ -149,6 +148,9 @@ public class OperationsBrowserView extends ViewPart
 
   protected void updateDetails(IStructuredSelection selection)
   {
+
+    applicabilityTestOutputText.setText("");
+
     if (!selection.isEmpty())
     {
       OperationsBrowserTreeNode node =
@@ -157,16 +159,20 @@ public class OperationsBrowserView extends ViewPart
 
       if (node instanceof OperationsBrowserOpNode)
       {
-        String failMessage = ((OperationsBrowserOpNode) node).getFailMessage();
+        OperationsBrowserOpNode opNode = (OperationsBrowserOpNode) node;
+        if (!opNode.isApplicable())
+        {
+          String failMessage = opNode.getFailMessage();
 
-        if (failMessage == null || failMessage.isEmpty())
-        {
-          applicabilityTestOutputText.setText("Not available");
-        }
-        else
-        {
-          applicabilityTestOutputText.setText("Operation '" + node.getName()
-              + "' failed because of:\n" + failMessage);
+          if (failMessage == null || failMessage.isEmpty())
+          {
+            applicabilityTestOutputText.setText("Not available");
+          }
+          else
+          {
+            applicabilityTestOutputText.setText("Operation '" + node.getName()
+                + "' failed because of:\n" + failMessage);
+          }
         }
       }
     }
