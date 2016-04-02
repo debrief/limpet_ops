@@ -1,15 +1,22 @@
 package sampleview.views.opsbrowser;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+
 public class OperationsBrowserOpNode extends OperationsBrowserTreeNode
 {
 
   private final String failMessage;
   private final boolean applicable;
+  private final IConfigurationElement operationDescriptor;
+  private final Object[] selection;
 
-  public OperationsBrowserOpNode(String name, String documentation,
+  public OperationsBrowserOpNode(String name,
+      IConfigurationElement operationDescriptor, Object[] selection,
       boolean applicable, String failMessage)
   {
-    super(name, documentation);
+    super(name, operationDescriptor.getChildren("documentation")[0].getValue());
+    this.operationDescriptor = operationDescriptor;
+    this.selection = selection;
     this.applicable = applicable;
     this.failMessage = failMessage;
   }
@@ -28,6 +35,16 @@ public class OperationsBrowserOpNode extends OperationsBrowserTreeNode
   public boolean isApplicable()
   {
     return applicable;
+  }
+
+  public IConfigurationElement getOperationDescriptor()
+  {
+    return operationDescriptor;
+  }
+
+  public Object[] getSelection()
+  {
+    return selection;
   }
 
 }

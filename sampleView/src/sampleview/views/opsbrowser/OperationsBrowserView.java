@@ -1,5 +1,10 @@
 package sampleview.views.opsbrowser;
 
+import java.util.Arrays;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -14,6 +19,7 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -24,6 +30,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
+import samplemodel.SampleModelOperation;
 import samplemodel.SampleModelOperationRegistry;
 import sampleview.views.SampleView;
 
@@ -60,8 +67,7 @@ public class OperationsBrowserView extends ViewPart
       OperationsBrowserTreeNode node = (OperationsBrowserTreeNode) element;
 
       // accept only libraries or applicable operations
-      return hasApplicableChild(node)
-          || node instanceof OperationsBrowserOpNode
+      return hasApplicableChild(node) || node instanceof OperationsBrowserOpNode
           && ((OperationsBrowserOpNode) element).isApplicable();
     }
 
@@ -84,6 +90,7 @@ public class OperationsBrowserView extends ViewPart
       return false;
     }
   };
+  private Button applyBtn;
 
   @Override
   public void createPartControl(Composite parent)
@@ -111,31 +118,44 @@ public class OperationsBrowserView extends ViewPart
       }
     });
 
-    operationsViewer = new TreeViewer(parent, SWT.SINGLE);
+    operationsViewer = new TreeViewer(parent, SWT.SINGLE | SWT.BORDER);
     operationsViewer.setContentProvider(new OperationsContentProvider());
     operationsViewer.setLabelProvider(new OperationsLabelProvider());
-    operationsViewer
-        .addSelectionChangedListener(new ISelectionChangedListener()
-        {
+    operationsViewer.addSelectionChangedListener(new ISelectionChangedListener()
+    {
 
-          @Override
-          public void selectionChanged(SelectionChangedEvent event)
-          {
-            updateDetails((IStructuredSelection) event.getSelection());
-          }
-        });
+      @Override
+      public void selectionChanged(SelectionChangedEvent event)
+      {
+        updateDetails((IStructuredSelection) event.getSelection());
+      }
+    });
 
-    GridDataFactory.fillDefaults().grab(true, true).applyTo(
-        operationsViewer.getControl());
+    GridDataFactory.fillDefaults().grab(true, true).applyTo(operationsViewer
+        .getControl());
+
+    applyBtn = new Button(parent, SWT.PUSH);
+    applyBtn.setText("Apply Operation");
+    applyBtn.addSelectionListener(new SelectionAdapter()
+    {
+      @Override
+      public void widgetSelected(SelectionEvent e)
+      {
+        handleApplyOperation();
+      }
+    });
+    GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(
+        applyBtn);
 
     new Label(parent, SWT.NONE).setText("Documentation:");
 
-    documentationBrowser = new Browser(parent, SWT.NONE);
+    documentationBrowser = new Browser(parent, SWT.BORDER);
     GridDataFactory.fillDefaults().grab(true, false).hint(SWT.DEFAULT, 80)
         .applyTo(documentationBrowser);
 
     new Label(parent, SWT.NONE).setText("Applicability Test Output:");
-    applicabilityTestOutputText = new Text(parent, SWT.V_SCROLL | SWT.H_SCROLL);
+    applicabilityTestOutputText = new Text(parent, SWT.V_SCROLL | SWT.H_SCROLL
+        | SWT.BORDER);
     applicabilityTestOutputText.setEditable(false);
     applicabilityTestOutputText.setBackground(parent.getShell().getDisplay()
         .getSystemColor(SWT.COLOR_LIST_BACKGROUND));
@@ -146,16 +166,46 @@ public class OperationsBrowserView extends ViewPart
     filterSelector.select(0);
   }
 
+  protected void handleApplyOperation()
+  {
+    try
+    {
+      IStructuredSelection selectedOperation =
+          (IStructuredSelection) operationsViewer.getSelection();
+      OperationsBrowserOpNode node = (OperationsBrowserOpNode) selectedOperation
+          .getFirstElement();
+      IConfigurationElement operationDescriptor = node.getOperationDescriptor();
+      SampleModelOperation operation =
+          (SampleModelOperation) operationDescriptor.createExecutableExtension(
+              "class");
+      Object[] result = operation.execute(node.getSelection());
+      MessageDialog.openInformation(getSite().getShell(), node.getName(), node
+          .getName() + " operation result is " + Arrays.toString(result));
+    }
+    catch (CoreException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
   protected void updateDetails(IStructuredSelection selection)
   {
 
     applicabilityTestOutputText.setText("");
+    applyBtn.setEnabled(false);
 
     if (!selection.isEmpty())
     {
-      OperationsBrowserTreeNode node =
-          (OperationsBrowserTreeNode) selection.getFirstElement();
-      documentationBrowser.setText(node.getDocumentation());
+      OperationsBrowserTreeNode node = (OperationsBrowserTreeNode) selection
+          .getFirstElement();
+      if (node.getDocumentation() != null)
+      {
+        documentationBrowser.setText(node.getDocumentation());
+      }
+      else
+      {
+        documentationBrowser.setText("Grouping node");
+      }
 
       if (node instanceof OperationsBrowserOpNode)
       {
@@ -173,6 +223,10 @@ public class OperationsBrowserView extends ViewPart
             applicabilityTestOutputText.setText("Operation '" + node.getName()
                 + "' failed because of:\n" + failMessage);
           }
+        }
+        else
+        {
+          applyBtn.setEnabled(true);
         }
       }
     }
@@ -199,10 +253,10 @@ public class OperationsBrowserView extends ViewPart
 
   protected void updateViewer(ISelection selection)
   {
-    OperationsBrowserTreeNode root =
-        new OperationsBrowserTreeNode("_ROOT_", null);
-    OperationsBrowserTreeBuilder builder =
-        new OperationsBrowserTreeBuilder(root);
+    OperationsBrowserTreeNode root = new OperationsBrowserTreeNode("_ROOT_",
+        null);
+    OperationsBrowserTreeBuilder builder = new OperationsBrowserTreeBuilder(
+        root);
     SampleModelOperationRegistry.INSTANCE.buildLibrary(
         ((IStructuredSelection) selection), builder);
     operationsViewer.setInput(root);

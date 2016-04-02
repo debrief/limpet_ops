@@ -45,8 +45,8 @@ public class SampleModelOperationRegistry
       operationLibraryRoot = new OperationLibrary();
 
       // read all configuration elements and split them into libraries/operations
-      IConfigurationElement[] configurationElements =
-          Platform.getExtensionRegistry().getConfigurationElementsFor(
+      IConfigurationElement[] configurationElements = Platform
+          .getExtensionRegistry().getConfigurationElementsFor(
               "sampleModel.SampleModelOperation");
 
       Map<String, OperationLibrary> libraries = new HashMap<>();
@@ -62,8 +62,8 @@ public class SampleModelOperationRegistry
           {
             String parentId = element.getAttribute("parentLibrary");
             String name = element.getAttribute("name");
-            String documentation =
-                element.getChildren("documentation")[0].getValue();
+            String documentation = element.getChildren("documentation")[0]
+                .getValue();
             libraries.put(id, new OperationLibrary(name, id, parentId,
                 documentation));
           }
@@ -84,8 +84,8 @@ public class SampleModelOperationRegistry
         }
         else
         {
-          OperationLibrary parentCategory =
-              libraries.get(library.getParentId());
+          OperationLibrary parentCategory = libraries.get(library
+              .getParentId());
           parentCategory.addLibrary(library);
         }
       }
@@ -137,56 +137,56 @@ public class SampleModelOperationRegistry
 
       String label = operation.getAttribute("label");
 
-      if (builder instanceof IOperationsBrowserLibraryBuilder)
+      final List<Object[]> inputPermutations = getInputPermutations(selection
+          .toArray(), operation);
+
+      IOperationLibraryBuilder target = builder;
+      if (inputPermutations.size() > 1)
       {
-
-        IOperationsBrowserLibraryBuilder libraryBuilder =
-            (IOperationsBrowserLibraryBuilder) builder;
-
-        libraryBuilder.buildOperationNode(selection.toArray(), label,
-            operation, applicable, CustomElementHandler.getDefault().getLog());
-        CustomElementHandler.getDefault().resetLog();
-
-      }
-      else
-      {
-
-        if (applicable)
+        target = builder.buildGroupNode(label, null);
+        
+        String permutationLabel = operation.getAttribute("permutationLabel");
+        if (permutationLabel != null)
         {
-          final List<Object[]> inputPermutations =
-              getInputPermutations(selection.toArray(), operation);
-
-          IOperationLibraryBuilder target = builder;
-          if (inputPermutations.size() > 1)
-          {
-            target = builder.buildGroupNode(label, null);
-          }
-
-          String permutationLabel = operation.getAttribute("permutationLabel");
-          if (permutationLabel != null)
-          {
-            label = permutationLabel;
-          }
-
-          for (Object[] inputPermutation : inputPermutations)
-          {
-            String operationName =
-                MessageFormat.format(label, inputPermutation);
-            target.buildOperationNode(inputPermutation, operationName,
-                operation);
-          }
-
+          label = label + " " + permutationLabel;
         }
       }
+
+      for (Object[] inputPermutation : inputPermutations)
+      {
+
+        String operationName = MessageFormat.format(label, inputPermutation);
+        if (target instanceof IOperationsBrowserLibraryBuilder)
+        {
+
+          IOperationsBrowserLibraryBuilder libraryBuilder =
+              (IOperationsBrowserLibraryBuilder) target;
+
+          libraryBuilder.buildOperationNode(inputPermutation, operationName,
+              operation, applicable, CustomElementHandler.getDefault()
+                  .getLog());
+          CustomElementHandler.getDefault().resetLog();
+
+        }
+        else if (applicable)
+        {
+          target.buildOperationNode(inputPermutation, operationName, operation);
+        }
+      }
+
     }
 
     // build sub libraries
-    for (OperationLibrary c : library.getLibraries())
+    for (
+
+    OperationLibrary c : library.getLibraries())
+
     {
-      IOperationLibraryBuilder sublibraryBuilder =
-          builder.buildGroupNode(c.getName(), c.getDocumentation());
+      IOperationLibraryBuilder sublibraryBuilder = builder.buildGroupNode(c
+          .getName(), c.getDocumentation());
       buildLibrary(selection, sublibraryBuilder, c);
     }
+
   }
 
   private List<Object[]> getInputPermutations(final Object[] objects,
@@ -199,9 +199,8 @@ public class SampleModelOperationRegistry
       // a non-commutative operation, i.e. a+b=b+a
       try
       {
-        inputPermutator =
-            (OperationInputPermutator) operation
-                .createExecutableExtension("inputPermutator");
+        inputPermutator = (OperationInputPermutator) operation
+            .createExecutableExtension("inputPermutator");
       }
       catch (CoreException e)
       {
@@ -219,16 +218,16 @@ public class SampleModelOperationRegistry
     IConfigurationElement[] children = configElement.getChildren("applicable");
 
     final ElementHandler elementHandler = CustomElementHandler.getDefault();
-    final ExpressionConverter converter =
-        new ExpressionConverter(new ElementHandler[]
-        {elementHandler});
+    final ExpressionConverter converter = new ExpressionConverter(
+        new ElementHandler[]
+    {elementHandler});
 
     if (children.length > 0)
     {
       IConfigurationElement applicableElement = children[0];
 
-      final IConfigurationElement[] expressionElements =
-          applicableElement.getChildren();
+      final IConfigurationElement[] expressionElements = applicableElement
+          .getChildren();
       if (expressionElements.length > 0)
       {
 
@@ -236,11 +235,10 @@ public class SampleModelOperationRegistry
 
         try
         {
-          Expression applicableExpression =
-              elementHandler.create(converter, expressionElement);
-          applicable =
-              applicableExpression.evaluate(evaluationContext).equals(
-                  EvaluationResult.TRUE);
+          Expression applicableExpression = elementHandler.create(converter,
+              expressionElement);
+          applicable = applicableExpression.evaluate(evaluationContext).equals(
+              EvaluationResult.TRUE);
         }
         catch (CoreException e)
         {
