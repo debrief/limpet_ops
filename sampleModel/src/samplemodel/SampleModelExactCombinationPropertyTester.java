@@ -32,14 +32,20 @@ public class SampleModelExactCombinationPropertyTester extends PropertyTester
         if (o instanceof SampleModel)
         {
           SampleModel m = (SampleModel) o;
-          if (m.isNumeric())
-          {
-            nCount++;
+          
+          if (!m.isArray()) {
+            if (m.isNumeric())
+            {
+              nCount++;
+            }
+            else
+            {
+              sCount++;
+            }
+          } else {
+            break;
           }
-          else
-          {
-            sCount++;
-          }
+          
           if (nCount > 2 || sCount > 1)
           {
             break;

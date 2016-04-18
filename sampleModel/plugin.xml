@@ -6,16 +6,16 @@
          point="org.eclipse.core.expressions.definitions">
       <definition
             id="sampleModel.allNumeric">
-        <iterate
-                  operator="and">
-               <instanceof
-                     value="samplemodel.SampleModel">
-               </instanceof>
-               <test
-                     property="sampleModel.numeric"
-                     value="true">
-               </test>
-            </iterate>
+	        <iterate
+	                  operator="and">
+	               <instanceof
+	                     value="samplemodel.SampleModel">
+	               </instanceof>
+	               <test
+	                     property="sampleModel.numeric"
+	                     value="true">
+	               </test>               
+	            </iterate>
       </definition>
       <definition
             id="sampleModel.allString">
@@ -64,6 +64,13 @@
             id="SampleModelExactCombinationPropertyTester"
             namespace="sampleModel"
             properties="2numbers1string"
+            type="org.eclipse.jface.viewers.StructuredSelection">
+      </propertyTester>
+      <propertyTester
+            class="samplemodel.SampleModelSameSizePropertyTester"
+            id="SampleModelSameSizePropertyTester"
+            namespace="sampleModel"
+            properties="sameSize"
             type="org.eclipse.jface.viewers.StructuredSelection">
       </propertyTester>
    </extension>

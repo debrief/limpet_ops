@@ -15,6 +15,9 @@
                <reference
                      definitionId="sampleModel.allNumeric">
                </reference>
+	           <test
+               	property="sampleModel.sameSize">
+               </test>	                           
             </and>
       	</applicable>
          <documentation>
@@ -60,6 +63,9 @@
                <reference
                      definitionId="sampleModel.allNumeric">
                </reference>
+        	   <test
+               	property="sampleModel.sameSize">
+               </test>	            
             </and>
          </applicable>
          <documentation>
@@ -80,6 +86,9 @@
                <reference
                      definitionId="sampleModel.allNumeric">
                </reference>
+               <test
+                     property="sampleModel.sameSize">
+               </test>
             </and>
          </applicable>
          <documentation>

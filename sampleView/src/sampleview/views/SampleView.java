@@ -14,8 +14,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IViewSite;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
 import samplemodel.SampleModel;
@@ -76,7 +74,10 @@ public class SampleView extends ViewPart
     res.add(new SampleModel("smiles"));
     res.add(new SampleModel(1));
     res.add(new SampleModel(5));
-
+    res.add(new SampleModel(1,2,3,4,5));
+    res.add(new SampleModel(1,2,3,4,6));
+    res.add(new SampleModel(1,2,3));
+    res.add(new SampleModel("a","b","c","d","e"));
     return res;
   }
 

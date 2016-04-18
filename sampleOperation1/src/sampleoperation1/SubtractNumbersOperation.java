@@ -10,10 +10,19 @@ public class SubtractNumbersOperation implements SampleModelOperation
   {
     SampleModel first = (SampleModel) input[0];
     SampleModel second = (SampleModel) input[1];
-    SampleModel result = new SampleModel(first.getNumber().doubleValue()
-        - second.getNumber().doubleValue());
+    int length = first.getData().length;
+
+    Number results[] = new Number[length];
+
+    for (int i = 0; i < length; i++)
+    {
+      results[i] =
+          ((Number) first.getData()[i]).doubleValue()
+              - ((Number) second.getData()[i]).doubleValue();
+    }
+
     return new Object[]
-    {result};
+    {new SampleModel(results)};
   }
 
 }

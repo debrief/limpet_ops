@@ -14,11 +14,18 @@ public class DistanceFromOperation implements SampleModelOperation
   {
     Object[] result = new Object[input.length - 1];
 
-    double first = ((SampleModel) input[0]).getNumber().doubleValue();
+    SampleModel first = (SampleModel) input[0];
     for (int i = 0; i < result.length; i++)
     {
-      double val = ((SampleModel) input[i + 1]).getNumber().doubleValue();
-      result[i] = new SampleModel(val - first);
+      SampleModel other = (SampleModel) input[i+1];
+      Number[] distances = new Number[first.getData().length];
+      for (int j = 0; j < first.getData().length; j++)
+      {
+        distances[j] =
+            ((Number) other.getData()[j]).doubleValue()
+                - ((Number) first.getData()[j]).doubleValue();
+      }
+      result[i] = new SampleModel(distances);
     }
     return result;
   }

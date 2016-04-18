@@ -1,45 +1,50 @@
 package samplemodel;
 
+import java.util.Arrays;
+
 public class SampleModel
 {
-  private final Number number;
-  private final String string;
 
-  private SampleModel(Number number, String string)
-  {
-    this.number = number;
-    this.string = string;
-  }
+  private final Object[] data;
 
-  public SampleModel(Number number)
+  public SampleModel(Object... data)
   {
-    this(number, null);
-  }
-
-  public SampleModel(String string)
-  {
-    this(null, string);
+    if (data.length == 0)
+    {
+      throw new IllegalArgumentException("Data cannot be empty");
+    }
+    this.data = data;
   }
 
   public boolean isNumeric()
   {
-    return number != null;
+    return data[0] instanceof Number;
+  }
+
+  public boolean isArray()
+  {
+    return data.length > 1;
   }
 
   public Number getNumber()
   {
-    return number;
+    return (Number) data[0];
   }
 
   public String getString()
   {
-    return string;
+    return (String) data[0];
+  }
+
+  public Object[] getData()
+  {
+    return data;
   }
 
   @Override
   public String toString()
   {
-    return isNumeric() ? number.toString() : getString();
+    return isArray() ? Arrays.toString(data) : data[0].toString();
   }
 
 }
