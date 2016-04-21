@@ -7,27 +7,28 @@
       <definition
             id="sampleModel.allNumeric">
         <iterate
-                  operator="and">
+                  operator="and" failMessage="All selected items must be numeric SampleModel instances">
                <instanceof
-                     value="samplemodel.SampleModel">
+                     value="samplemodel.SampleModel" failMessage="A selected item is a SampleModel">
                </instanceof>
                <test
                      property="sampleModel.numeric"
-                     value="true">
+                     value="true"
+                     failMessage="A selected item is numeric">
                </test>
             </iterate>
       </definition>
       <definition
             id="sampleModel.allString">
          <iterate
-               operator="and" failMessage="All should be instanceof sample model and not be numeric">
+               operator="and" failMessage="All selected items are string SampleModel instances">
             <instanceof
-                  value="samplemodel.SampleModel" failMessage="Should be instanceof sample model">
+                  value="samplemodel.SampleModel" failMessage="A selected item is a SampleModel">
             </instanceof>
             <test
                   property="sampleModel.numeric"
                   value="false"
-                  failMessage="Should not be numeric">
+                  failMessage="A selected item is a string">
             </test>
          </iterate>
       </definition>
@@ -35,16 +36,18 @@
             id="sampleModel.noNumbers">
          <iterate
                ifEmpty="false"
-               operator="and">
+               operator="and"
+               failMessage="No selected items are numeric SampleModel instances">
             <or>
-               <not>
+               <not failMessage="A selected item is not a SampleModel">
                   <instanceof
                         value="samplemodel.SampleModel">
                   </instanceof>
                </not>
                <test
                      property="sampleModel.numeric"
-                     value="false">
+                     value="false"
+                     failMessage="A selected item is not numeric">
                </test>
             </or>
          </iterate>

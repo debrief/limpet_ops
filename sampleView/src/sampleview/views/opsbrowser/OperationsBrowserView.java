@@ -221,7 +221,7 @@ public class OperationsBrowserView extends ViewPart
           else
           {
             applicabilityTestOutputText.setText("Operation '" + node.getName()
-                + "' failed because of:\n" + failMessage);
+                + "' is not applicable because:\n" + failMessage);
           }
         }
         else
