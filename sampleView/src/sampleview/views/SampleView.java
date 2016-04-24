@@ -14,8 +14,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IViewSite;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
 import samplemodel.SampleModel;
@@ -106,14 +104,13 @@ public class SampleView extends ViewPart
 
   private void buildContextMenu(IMenuManager manager)
   {
-    IStructuredSelection selection =
-        (IStructuredSelection) viewer.getSelection();
+    IStructuredSelection selection = (IStructuredSelection) viewer
+        .getSelection();
     Shell shell = getSite().getShell();
-
-    OperationLibraryMenuBuilder menuBuilder =
-        new OperationLibraryMenuBuilder(manager, shell);
-
-    SampleModelOperationRegistry.INSTANCE.buildLibrary(selection, menuBuilder);
+    OperationsLibraryMenuBuilder menuBuilder = new OperationsLibraryMenuBuilder(
+        manager, shell);
+    menuBuilder.buildLibrary((IStructuredSelection) selection,
+        SampleModelOperationRegistry.INSTANCE.getOperationLibraryRoot());
   }
 
 }

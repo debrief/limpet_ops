@@ -3,6 +3,14 @@ package sampleview.views.opsbrowser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A base model object for the tree representation of the operations library. Created by the
+ * {@link OperationsBrowserTreeBuilder} and provided as an input (model) to the UI tree control.
+ * <br/>
+ * Represents a group/library of operations
+ * 
+ * @see OperationsBrowserOpNode
+ */
 public class OperationsBrowserTreeNode
 {
 
@@ -10,7 +18,7 @@ public class OperationsBrowserTreeNode
   private final String name;
   private final String documentation;
 
-  public OperationsBrowserTreeNode(String name, String documentation)
+  OperationsBrowserTreeNode(String name, String documentation)
   {
     this.name = name;
     this.documentation = documentation;
@@ -37,6 +45,5 @@ public class OperationsBrowserTreeNode
   {
     return documentation;
   }
-
 
 }

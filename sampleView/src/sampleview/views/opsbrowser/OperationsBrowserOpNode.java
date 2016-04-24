@@ -2,6 +2,10 @@ package sampleview.views.opsbrowser;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 
+/**
+ * Represents an operation (leaf node) in the hierarchical tree model of the operation library.
+ *
+ */
 public class OperationsBrowserOpNode extends OperationsBrowserTreeNode
 {
 

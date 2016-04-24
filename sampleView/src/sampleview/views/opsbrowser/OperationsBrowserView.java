@@ -253,12 +253,13 @@ public class OperationsBrowserView extends ViewPart
 
   protected void updateViewer(ISelection selection)
   {
+    // the name for the root is just for debug purposes, anything would be OK
     OperationsBrowserTreeNode root = new OperationsBrowserTreeNode("_ROOT_",
         null);
     OperationsBrowserTreeBuilder builder = new OperationsBrowserTreeBuilder(
         root);
-    SampleModelOperationRegistry.INSTANCE.buildLibrary(
-        ((IStructuredSelection) selection), builder);
+    builder.buildLibrary(((IStructuredSelection) selection),
+        SampleModelOperationRegistry.INSTANCE.getOperationLibraryRoot());
     operationsViewer.setInput(root);
 
     operationsViewer.expandAll();

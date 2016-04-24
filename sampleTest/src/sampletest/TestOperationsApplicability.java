@@ -26,9 +26,10 @@ public class TestOperationsApplicability
 
     MockOperationLibraryBuilder builder = new MockOperationLibraryBuilder();
     StructuredSelection selection = new StructuredSelection(objects);
-    SampleModelOperationRegistry.INSTANCE.buildLibrary(selection, builder);
+    builder.buildLibrary(selection, SampleModelOperationRegistry.INSTANCE
+        .getOperationLibraryRoot());
 
-    Assert.assertEquals("//Arithmetic operations//Subtract//", builder
+    Assert.assertEquals("//Arithmetic operations//", builder
         .getOperationPath("sampleoperation1.SubtractNumbersOperation"));
 
     // negative test
@@ -39,7 +40,8 @@ public class TestOperationsApplicability
 
     builder = new MockOperationLibraryBuilder();
     selection = new StructuredSelection(objects);
-    SampleModelOperationRegistry.INSTANCE.buildLibrary(selection, builder);
+    builder.buildLibrary(selection, SampleModelOperationRegistry.INSTANCE
+        .getOperationLibraryRoot());
 
     Assert.assertNull(builder.getOperationPath(
         "sampleoperation1.SubtractNumbersOperation"));
