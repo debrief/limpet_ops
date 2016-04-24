@@ -258,8 +258,7 @@ public class OperationsBrowserView extends ViewPart
         null);
     OperationsBrowserTreeBuilder builder = new OperationsBrowserTreeBuilder(
         root);
-    builder.buildLibrary(((IStructuredSelection) selection),
-        SampleModelOperationRegistry.INSTANCE.getOperationLibraryRoot());
+    builder.buildLibrary(((IStructuredSelection) selection));
     operationsViewer.setInput(root);
 
     operationsViewer.expandAll();

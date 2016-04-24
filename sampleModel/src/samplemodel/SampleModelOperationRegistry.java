@@ -23,7 +23,7 @@ public class SampleModelOperationRegistry
 
   }
 
-  public OperationLibrary getOperationLibraryRoot()
+  OperationLibrary getOperationLibraryRoot()
   {
 
     // lazy initialization

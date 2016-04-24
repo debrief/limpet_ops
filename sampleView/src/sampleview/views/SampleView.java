@@ -17,12 +17,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.ViewPart;
 
 import samplemodel.SampleModel;
-import samplemodel.SampleModelOperationRegistry;
 
 /**
  * Ref: https://www.eclipse.org/forums/index.php/t/107919/
- * 
- * @author dinko.ivanov@gepardsoft.com
  * 
  */
 public class SampleView extends ViewPart
@@ -109,8 +106,7 @@ public class SampleView extends ViewPart
     Shell shell = getSite().getShell();
     OperationsLibraryMenuBuilder menuBuilder = new OperationsLibraryMenuBuilder(
         manager, shell);
-    menuBuilder.buildLibrary((IStructuredSelection) selection,
-        SampleModelOperationRegistry.INSTANCE.getOperationLibraryRoot());
+    menuBuilder.buildLibrary((IStructuredSelection) selection);
   }
 
 }

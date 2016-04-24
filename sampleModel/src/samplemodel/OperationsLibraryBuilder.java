@@ -27,15 +27,25 @@ public abstract class OperationsLibraryBuilder
 {
 
   /**
+   * Builds the library starting from the root
+   * 
+   * @param selection
+   */
+  public void buildLibrary(IStructuredSelection selection)
+  {
+    buildLibrary(selection, SampleModelOperationRegistry.INSTANCE
+        .getOperationLibraryRoot());
+  }
+
+  /**
    * @param selection
    *          selected items in the user interface, that is context for operations, whether they are
    *          applicable or not. Operations might have different representation in the UI (or none
    *          at all) based on the context.
    * @param library
-   *          normally clients will call this method with the value of
-   *          {@link SampleModelOperationRegistry#INSTANCE#getOperationLibraryRoot()}. However they
-   *          might choose to build the library representation from a different starting point in
-   *          the operations hierarchy.
+   *          normally clients will call {@link #buildLibrary(IStructuredSelection)} method. However
+   *          they might choose to build the library representation from a different starting point
+   *          in the operations hierarchy.
    */
   public void buildLibrary(IStructuredSelection selection,
       OperationLibrary library)
