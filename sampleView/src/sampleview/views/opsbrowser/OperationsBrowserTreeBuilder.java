@@ -11,7 +11,7 @@ import samplemodel.failurelog.CustomElementHandler;
 
 /**
  * Builds a hierarchical tree model to represent the operation library in a UI tree control
- *
+ * 
  */
 public class OperationsBrowserTreeBuilder extends OperationsLibraryBuilder
 {
@@ -23,19 +23,28 @@ public class OperationsBrowserTreeBuilder extends OperationsLibraryBuilder
     this.node = node;
   }
 
-  protected OperationsLibraryBuilder buildGroupNode(String name, String details)
+  protected OperationsLibraryBuilder
+      buildGroupNode(String name, String details)
   {
-    OperationsBrowserTreeNode child = new OperationsBrowserTreeNode(name,
-        details);
+    return buildGroupNodeInternal(name, details, true, false);
+  }
+
+  protected OperationsLibraryBuilder buildGroupNodeInternal(String name,
+      String details, boolean applicable, boolean operationGroup)
+  {
+    OperationsBrowserTreeNode child =
+        new OperationsBrowserTreeNode(name, details, applicable, operationGroup);
     node.addChild(child);
     return new OperationsBrowserTreeBuilder(child);
   }
 
   private void buildOperationNode(Object[] selection, String operationName,
-      IConfigurationElement operationDescriptor, boolean applicable, String log)
+      IConfigurationElement operationDescriptor, boolean applicable,
+      String log, boolean operationGroup)
   {
-    OperationsBrowserOpNode operationNode = new OperationsBrowserOpNode(
-        operationName, operationDescriptor, selection, applicable, log);
+    OperationsBrowserOpNode operationNode =
+        new OperationsBrowserOpNode(operationName, operationDescriptor,
+            selection, applicable, log, operationGroup);
     node.addChild(operationNode);
   }
 
@@ -47,8 +56,8 @@ public class OperationsBrowserTreeBuilder extends OperationsLibraryBuilder
     boolean applicable = isApplicable(operation, selection);
     String label = operation.getAttribute("label");
     String permutationLabel = operation.getAttribute("permutationLabel");
-    List<Object[]> inputPermutations = getInputPermutations(selection.toArray(),
-        operation);
+    List<Object[]> inputPermutations =
+        getInputPermutations(selection.toArray(), operation);
 
     OperationsBrowserTreeBuilder builder = this;
 
@@ -59,8 +68,9 @@ public class OperationsBrowserTreeBuilder extends OperationsLibraryBuilder
     {
       if (inputPermutations.size() > 1)
       {
-        builder = (OperationsBrowserTreeBuilder) builder.buildGroupNode(label,
-            null);
+        builder =
+            (OperationsBrowserTreeBuilder) builder.buildGroupNodeInternal(
+                label, null, true, true);
 
         if (permutationLabel != null)
         {
@@ -72,13 +82,16 @@ public class OperationsBrowserTreeBuilder extends OperationsLibraryBuilder
       {
         String operationName = MessageFormat.format(label, inputPermutation);
         builder.buildOperationNode(inputPermutation, operationName, operation,
-            applicable, failMessage);
+            applicable, failMessage, false);
       }
     }
     else
     {
+      boolean operationGroup =
+          operation.getAttribute("inputPermutator") != null;
+
       builder.buildOperationNode(inputPermutations.get(0), label, operation,
-          applicable, failMessage);
+          applicable, failMessage, operationGroup);
     }
 
   }

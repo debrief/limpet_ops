@@ -4,24 +4,23 @@ import org.eclipse.core.runtime.IConfigurationElement;
 
 /**
  * Represents an operation (leaf node) in the hierarchical tree model of the operation library.
- *
+ * 
  */
 public class OperationsBrowserOpNode extends OperationsBrowserTreeNode
 {
 
   private final String failMessage;
-  private final boolean applicable;
   private final IConfigurationElement operationDescriptor;
   private final Object[] selection;
 
   public OperationsBrowserOpNode(String name,
       IConfigurationElement operationDescriptor, Object[] selection,
-      boolean applicable, String failMessage)
+      boolean applicable, String failMessage, boolean operationGroup)
   {
-    super(name, operationDescriptor.getChildren("documentation")[0].getValue());
+    super(name, operationDescriptor.getChildren("documentation")[0].getValue(),
+        applicable, operationGroup);
     this.operationDescriptor = operationDescriptor;
     this.selection = selection;
-    this.applicable = applicable;
     this.failMessage = failMessage;
   }
 
@@ -34,11 +33,6 @@ public class OperationsBrowserOpNode extends OperationsBrowserTreeNode
   public String getFailMessage()
   {
     return failMessage;
-  }
-
-  public boolean isApplicable()
-  {
-    return applicable;
   }
 
   public IConfigurationElement getOperationDescriptor()

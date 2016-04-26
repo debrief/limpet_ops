@@ -31,7 +31,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
 import samplemodel.SampleModelOperation;
-import samplemodel.SampleModelOperationRegistry;
 import sampleview.views.SampleView;
 
 /**
@@ -253,12 +252,10 @@ public class OperationsBrowserView extends ViewPart
 
   protected void updateViewer(ISelection selection)
   {
-    // the name for the root is just for debug purposes, anything would be OK
-    OperationsBrowserTreeNode root = new OperationsBrowserTreeNode("_ROOT_",
-        null);
+    OperationsBrowserTreeNode root = new OperationsBrowserTreeNode();
     OperationsBrowserTreeBuilder builder = new OperationsBrowserTreeBuilder(
         root);
-    builder.buildLibrary(((IStructuredSelection) selection));
+    builder.buildLibrary((IStructuredSelection) selection);
     operationsViewer.setInput(root);
 
     operationsViewer.expandAll();
