@@ -98,10 +98,10 @@ class LoggerNode
       {
         sb.append("  ");
       }
-      sb.append("[").append(message).append("]");
+      sb.append("[").append(message).append("] check failed");
       if (hasChildMessage())
       {
-        sb.append(" failed because of:");
+        sb.append(" because of:");
       }
       sb.append(System.lineSeparator());
       indentLevel++;

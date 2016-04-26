@@ -10,7 +10,8 @@ import org.eclipse.ui.PlatformUI;
 class OperationsLabelProvider extends LabelProvider
 {
 
-  private Image disabledImage;
+  private Image disabledOperationImage;
+  private Image disabledOperationGroupImage;
 
   @Override
   public String getText(Object element)
@@ -18,30 +19,53 @@ class OperationsLabelProvider extends LabelProvider
     return ((OperationsBrowserTreeNode) element).getName();
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public Image getImage(Object element)
   {
-    if (element instanceof OperationsBrowserOpNode)
+
+    OperationsBrowserTreeNode node = (OperationsBrowserTreeNode) element;
+
+    if (node.isOperationGroup())
     {
-      OperationsBrowserOpNode opNode = (OperationsBrowserOpNode) element;
+      return node.isApplicable() ? PlatformUI.getWorkbench().getSharedImages()
+          .getImage(ISharedImages.IMG_OBJ_PROJECT)
+          : getDisabledOperationGroupImage();
+    }
+    else if (node instanceof OperationsBrowserOpNode)
+    {
+      OperationsBrowserOpNode opNode = (OperationsBrowserOpNode) node;
       return opNode.isApplicable() ? PlatformUI.getWorkbench()
           .getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT)
-          : getDisabledImage();
+          : getDisabledOperationImage();
 
     }
     return PlatformUI.getWorkbench().getSharedImages().getImage(
         ISharedImages.IMG_OBJ_FOLDER);
   }
 
-  private Image getDisabledImage()
+  private Image getDisabledOperationImage()
   {
-    if (disabledImage == null)
+    if (disabledOperationImage == null)
     {
-      disabledImage =
+      disabledOperationImage =
           new Image(Display.getDefault(), PlatformUI.getWorkbench()
               .getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT),
               SWT.IMAGE_DISABLE);
     }
-    return disabledImage;
+    return disabledOperationImage;
+  }
+
+  @SuppressWarnings("deprecation")
+  private Image getDisabledOperationGroupImage()
+  {
+    if (disabledOperationGroupImage == null)
+    {
+      disabledOperationGroupImage =
+          new Image(Display.getDefault(), PlatformUI.getWorkbench()
+              .getSharedImages().getImage(ISharedImages.IMG_OBJ_PROJECT),
+              SWT.IMAGE_DISABLE);
+    }
+    return disabledOperationGroupImage;
   }
 }

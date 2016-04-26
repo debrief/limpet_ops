@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import junit.framework.Assert;
 import samplemodel.SampleModel;
-import samplemodel.SampleModelOperationRegistry;
 
 /**
  * Makes sure the proper operations are contributed for a specific selection of object.
@@ -26,10 +25,10 @@ public class TestOperationsApplicability
 
     MockOperationLibraryBuilder builder = new MockOperationLibraryBuilder();
     StructuredSelection selection = new StructuredSelection(objects);
-    SampleModelOperationRegistry.INSTANCE.buildLibrary(selection, builder);
+    builder.buildLibrary(selection);
 
-    Assert.assertEquals("//Arithmetic operations//Subtract//", builder
-        .getOperationPath("sampleoperation1.SubtractNumbersOperation"));
+    Assert.assertEquals("//Arithmetic operations//", builder.getOperationPath(
+        "sampleoperation1.SubtractNumbersOperation"));
 
     // negative test
     objects = new ArrayList<>();
@@ -39,7 +38,7 @@ public class TestOperationsApplicability
 
     builder = new MockOperationLibraryBuilder();
     selection = new StructuredSelection(objects);
-    SampleModelOperationRegistry.INSTANCE.buildLibrary(selection, builder);
+    builder.buildLibrary(selection);
 
     Assert.assertNull(builder.getOperationPath(
         "sampleoperation1.SubtractNumbersOperation"));
