@@ -6,28 +6,29 @@
          point="org.eclipse.core.expressions.definitions">
       <definition
             id="sampleModel.allNumeric">
-	        <iterate
-	                  operator="and">
-	               <instanceof
-	                     value="samplemodel.SampleModelCollection">
-	               </instanceof>
-	               <test
-	                     property="sampleModel.numeric"
-	                     value="true">
-	               </test>               
-	            </iterate>
+        <iterate
+                  operator="and" failMessage="All selected items must be numeric SampleModelCollection instances">
+               <instanceof
+                     value="samplemodel.SampleModelCollection" failMessage="A selected item is a SampleModelCollection">
+               </instanceof>
+               <test
+                     property="sampleModel.numeric"
+                     value="true"
+                     failMessage="A selected item is numeric">
+               </test>
+            </iterate>
       </definition>
       <definition
             id="sampleModel.allString">
          <iterate
-               operator="and" failMessage="All should be instanceof sample model and not be numeric">
+               operator="and" failMessage="All selected items are string SampleModel instances">
             <instanceof
-                  value="samplemodel.SampleModelCollection" failMessage="Should be instanceof sample model">
+                  value="samplemodel.SampleModelCollection" failMessage="A selected item is a SampleModelCollection">
             </instanceof>
             <test
                   property="sampleModel.numeric"
                   value="false"
-                  failMessage="Should not be numeric">
+                  failMessage="A selected item is a string">
             </test>
          </iterate>
       </definition>
@@ -35,16 +36,18 @@
             id="sampleModel.noNumbers">
          <iterate
                ifEmpty="false"
-               operator="and">
+               operator="and"
+               failMessage="No selected items are numeric SampleModel instances">
             <or>
-               <not>
+               <not failMessage="A selected item is not a SampleModel">
                   <instanceof
                         value="samplemodel.SampleModelCollection">
                   </instanceof>
                </not>
                <test
                      property="sampleModel.numeric"
-                     value="false">
+                     value="false"
+                     failMessage="A selected item is not numeric">
                </test>
             </or>
          </iterate>

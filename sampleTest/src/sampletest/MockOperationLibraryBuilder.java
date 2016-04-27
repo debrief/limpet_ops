@@ -1,18 +1,18 @@
 package sampletest;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.jface.viewers.IStructuredSelection;
 
-import samplemodel.IOperationLibraryBuilder;
+import samplemodel.OperationsLibraryBuilder;
 
 /**
  * Test helper. Implementation of {@link IOperationLibraryBuilder}, which collects the operations in
  * a {@link Map}.
  */
-public class MockOperationLibraryBuilder implements IOperationLibraryBuilder
+public class MockOperationLibraryBuilder extends OperationsLibraryBuilder
 {
 
   static final String SEPARATOR = "//";
@@ -22,16 +22,18 @@ public class MockOperationLibraryBuilder implements IOperationLibraryBuilder
 
   private String path = SEPARATOR;
 
-  @Override
-  public void buildOperationNode(Object[] selection, String operationName,
-      IConfigurationElement operationDescriptor)
+  protected void buildOperationNode(IConfigurationElement operation,
+      IStructuredSelection selection)
   {
-    String implementationClass = operationDescriptor.getAttribute("class");
-    operations.put(implementationClass, path);
+    if (isApplicable(operation, selection))
+    {
+      String implementationClass = operation.getAttribute("class");
+      operations.put(implementationClass, path);
+    }
   }
 
   @Override
-  public IOperationLibraryBuilder buildGroupNode(String name, String details)
+  public OperationsLibraryBuilder buildGroupNode(String name, String details)
   {
     path = path + name + SEPARATOR;
     return this;

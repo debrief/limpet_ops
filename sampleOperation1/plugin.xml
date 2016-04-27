@@ -8,9 +8,9 @@
             class="sampleoperation1.AddNumbersOperation"
             label="Add Numbers">         
          <applicable>
-            <and>
+            <and failMessage="Selection should contain 1 or more numeric items">
                <count
-                     value="(1-">
+                     value="(1-" failMessage="Selection should contain 1 or more items">
                </count>
                <reference
                      definitionId="sampleModel.allNumeric">
@@ -31,7 +31,7 @@
            <test
                property="sampleModel.2numbers1string"
                value="true"
-               failMessage="Should be 2 numbers and 1 string">
+               failMessage="Selection should contain 2 numbers and 1 string">
          	</test>
          </applicable>
          <documentation>
@@ -56,9 +56,9 @@
             library="sampleModel.operations.arithmetic"
             permutationLabel="{1} from {0}">
          <applicable>
-            <and>
+            <and failMessage="Selection should contain 2 numeric items">
                <count
-                     value="2">
+                     value="2" failMessage="Selection should contain 2 items">
                </count>
                <reference
                      definitionId="sampleModel.allNumeric">
@@ -79,9 +79,9 @@
             library="sampleOperation1.arithmetic.sublibrary"
             permutationLabel="from {0}">
          <applicable>
-            <and>
+            <and failMessage="Selection should contain 1 or more numeric items">
                <count
-                     value="(1-">
+                     value="(1-" failMessage="Selection should contain 1 or more items">
                </count>
                <reference
                      definitionId="sampleModel.allNumeric">

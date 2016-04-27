@@ -8,9 +8,9 @@
             label="Concatenate Strings"
             library="sampleModel.operations.string">         
          <applicable>
-            <and>
+            <and failMessage="Selection should contain 1 or more string items">
                <count
-                     value="(1-">
+                     value="(1-" failMessage="Selection should contain 1 or more items">
                </count>
                <reference
                      definitionId="sampleModel.allString">
