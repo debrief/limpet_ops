@@ -26,7 +26,8 @@ public class SampleModelSameSizePropertyTester extends PropertyTester
     for (Iterator selectionIterator = selection.iterator(); selectionIterator
         .hasNext();)
     {
-      SampleModel next = (SampleModel) selectionIterator.next();
+      SampleModelCollection next =
+          (SampleModelCollection) selectionIterator.next();
       int length = next.getData().length;
 
       if (size == -1)

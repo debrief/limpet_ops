@@ -1,6 +1,7 @@
 package sampleoperation1;
 
 import samplemodel.SampleModel;
+import samplemodel.SampleModelCollection;
 import samplemodel.SampleModelOperation;
 
 public class SubtractNumbersOperation implements SampleModelOperation
@@ -8,8 +9,8 @@ public class SubtractNumbersOperation implements SampleModelOperation
 
   public Object[] execute(Object[] input)
   {
-    SampleModel first = (SampleModel) input[0];
-    SampleModel second = (SampleModel) input[1];
+    SampleModelCollection first = (SampleModelCollection) input[0];
+    SampleModelCollection second = (SampleModelCollection) input[1];
     int length = first.getData().length;
 
     Number results[] = new Number[length];
@@ -17,12 +18,12 @@ public class SubtractNumbersOperation implements SampleModelOperation
     for (int i = 0; i < length; i++)
     {
       results[i] =
-          ((Number) first.getData()[i]).doubleValue()
-              - ((Number) second.getData()[i]).doubleValue();
+          ((SampleModel) first.getData()[i]).getNumber().doubleValue()
+              - ((SampleModel) second.getData()[i]).getNumber().doubleValue();
     }
 
     return new Object[]
-    {new SampleModel(results)};
+    {SampleModelCollection.wrap(results)};
   }
 
 }

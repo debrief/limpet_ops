@@ -1,50 +1,49 @@
 package samplemodel;
 
-import java.util.Arrays;
-
 public class SampleModel
 {
 
-  private final Object[] data;
+  private final Object data;
+  /**
+   * <code>null</code> means no timestamp
+   */
+  private Long timestamp;
 
-  public SampleModel(Object... data)
+  public SampleModel(Object data)
   {
-    if (data.length == 0)
-    {
-      throw new IllegalArgumentException("Data cannot be empty");
-    }
     this.data = data;
   }
 
   public boolean isNumeric()
   {
-    return data[0] instanceof Number;
-  }
-
-  public boolean isArray()
-  {
-    return data.length > 1;
+    return data instanceof Number;
   }
 
   public Number getNumber()
   {
-    return (Number) data[0];
+    return (Number) data;
   }
 
   public String getString()
   {
-    return (String) data[0];
+    return (String) data;
   }
 
-  public Object[] getData()
+  public Long getTimestamp()
   {
-    return data;
+    return timestamp;
+  }
+
+  public void setTimestamp(Long timestamp)
+  {
+    this.timestamp = timestamp;
   }
 
   @Override
   public String toString()
   {
-    return isArray() ? Arrays.toString(data) : data[0].toString();
+    return getTimestamp() != null ? "[" + data.toString() + ", " + timestamp
+        + "]" : data.toString();
   }
 
 }

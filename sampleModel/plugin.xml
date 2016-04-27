@@ -9,7 +9,7 @@
 	        <iterate
 	                  operator="and">
 	               <instanceof
-	                     value="samplemodel.SampleModel">
+	                     value="samplemodel.SampleModelCollection">
 	               </instanceof>
 	               <test
 	                     property="sampleModel.numeric"
@@ -22,7 +22,7 @@
          <iterate
                operator="and" failMessage="All should be instanceof sample model and not be numeric">
             <instanceof
-                  value="samplemodel.SampleModel" failMessage="Should be instanceof sample model">
+                  value="samplemodel.SampleModelCollection" failMessage="Should be instanceof sample model">
             </instanceof>
             <test
                   property="sampleModel.numeric"
@@ -39,7 +39,7 @@
             <or>
                <not>
                   <instanceof
-                        value="samplemodel.SampleModel">
+                        value="samplemodel.SampleModelCollection">
                   </instanceof>
                </not>
                <test
@@ -57,7 +57,7 @@
             id="SampleModelNumericPropertyTester"
             namespace="sampleModel"
             properties="numeric"
-            type="samplemodel.SampleModel">
+            type="samplemodel.SampleModelCollection">
       </propertyTester>
       <propertyTester
             class="samplemodel.SampleModelExactCombinationPropertyTester"

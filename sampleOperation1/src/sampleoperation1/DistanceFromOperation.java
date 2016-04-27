@@ -1,6 +1,7 @@
 package sampleoperation1;
 
 import samplemodel.SampleModel;
+import samplemodel.SampleModelCollection;
 import samplemodel.SampleModelOperation;
 
 public class DistanceFromOperation implements SampleModelOperation
@@ -14,18 +15,18 @@ public class DistanceFromOperation implements SampleModelOperation
   {
     Object[] result = new Object[input.length - 1];
 
-    SampleModel first = (SampleModel) input[0];
+    SampleModelCollection first = (SampleModelCollection) input[0];
     for (int i = 0; i < result.length; i++)
     {
-      SampleModel other = (SampleModel) input[i+1];
+      SampleModelCollection other = (SampleModelCollection) input[i + 1];
       Number[] distances = new Number[first.getData().length];
       for (int j = 0; j < first.getData().length; j++)
       {
         distances[j] =
-            ((Number) other.getData()[j]).doubleValue()
-                - ((Number) first.getData()[j]).doubleValue();
+            ((SampleModel) other.getData()[j]).getNumber().doubleValue()
+                - ((SampleModel) first.getData()[j]).getNumber().doubleValue();
       }
-      result[i] = new SampleModel(distances);
+      result[i] = SampleModelCollection.wrap(distances);
     }
     return result;
   }
