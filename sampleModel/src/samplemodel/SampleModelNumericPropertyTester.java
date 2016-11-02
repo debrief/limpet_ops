@@ -13,7 +13,7 @@ public class SampleModelNumericPropertyTester extends PropertyTester
   public boolean test(Object receiver, String property, Object[] args,
       Object expectedValue)
   {
-    SampleModel model = (SampleModel) receiver;
+    SampleModelCollection model = (SampleModelCollection) receiver;
     return model.isNumeric() == (Boolean) expectedValue;
   }
 

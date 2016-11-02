@@ -7,9 +7,9 @@
       <definition
             id="sampleModel.allNumeric">
         <iterate
-                  operator="and" failMessage="All selected items must be numeric SampleModel instances">
+                  operator="and" failMessage="All selected items must be numeric SampleModelCollection instances">
                <instanceof
-                     value="samplemodel.SampleModel" failMessage="A selected item is a SampleModel">
+                     value="samplemodel.SampleModelCollection" failMessage="A selected item is a SampleModelCollection">
                </instanceof>
                <test
                      property="sampleModel.numeric"
@@ -23,7 +23,7 @@
          <iterate
                operator="and" failMessage="All selected items are string SampleModel instances">
             <instanceof
-                  value="samplemodel.SampleModel" failMessage="A selected item is a SampleModel">
+                  value="samplemodel.SampleModelCollection" failMessage="A selected item is a SampleModelCollection">
             </instanceof>
             <test
                   property="sampleModel.numeric"
@@ -41,7 +41,7 @@
             <or>
                <not failMessage="A selected item is not a SampleModel">
                   <instanceof
-                        value="samplemodel.SampleModel">
+                        value="samplemodel.SampleModelCollection">
                   </instanceof>
                </not>
                <test
@@ -60,13 +60,20 @@
             id="SampleModelNumericPropertyTester"
             namespace="sampleModel"
             properties="numeric"
-            type="samplemodel.SampleModel">
+            type="samplemodel.SampleModelCollection">
       </propertyTester>
       <propertyTester
             class="samplemodel.SampleModelExactCombinationPropertyTester"
             id="SampleModelExactCombinationPropertyTester"
             namespace="sampleModel"
             properties="2numbers1string"
+            type="org.eclipse.jface.viewers.StructuredSelection">
+      </propertyTester>
+      <propertyTester
+            class="samplemodel.SampleModelSameSizePropertyTester"
+            id="SampleModelSameSizePropertyTester"
+            namespace="sampleModel"
+            properties="sameSize"
             type="org.eclipse.jface.viewers.StructuredSelection">
       </propertyTester>
    </extension>

@@ -29,17 +29,23 @@ public class SampleModelExactCombinationPropertyTester extends PropertyTester
       for (Iterator<?> iterator = selection.iterator(); iterator.hasNext();)
       {
         Object o = iterator.next();
-        if (o instanceof SampleModel)
+        if (o instanceof SampleModelCollection)
         {
-          SampleModel m = (SampleModel) o;
-          if (m.isNumeric())
-          {
-            nCount++;
+          SampleModelCollection m = (SampleModelCollection) o;
+          
+          if (!m.isSingleton()) {
+            if (m.isNumeric())
+            {
+              nCount++;
+            }
+            else
+            {
+              sCount++;
+            }
+          } else {
+            break;
           }
-          else
-          {
-            sCount++;
-          }
+          
           if (nCount > 2 || sCount > 1)
           {
             break;

@@ -2,44 +2,48 @@ package samplemodel;
 
 public class SampleModel
 {
-  private final Number number;
-  private final String string;
 
-  private SampleModel(Number number, String string)
-  {
-    this.number = number;
-    this.string = string;
-  }
+  private final Object data;
+  /**
+   * <code>null</code> means no timestamp
+   */
+  private Long timestamp;
 
-  public SampleModel(Number number)
+  public SampleModel(Object data)
   {
-    this(number, null);
-  }
-
-  public SampleModel(String string)
-  {
-    this(null, string);
+    this.data = data;
   }
 
   public boolean isNumeric()
   {
-    return number != null;
+    return data instanceof Number;
   }
 
   public Number getNumber()
   {
-    return number;
+    return (Number) data;
   }
 
   public String getString()
   {
-    return string;
+    return (String) data;
+  }
+
+  public Long getTimestamp()
+  {
+    return timestamp;
+  }
+
+  public void setTimestamp(Long timestamp)
+  {
+    this.timestamp = timestamp;
   }
 
   @Override
   public String toString()
   {
-    return isNumeric() ? number.toString() : getString();
+    return getTimestamp() != null ? "[" + data.toString() + ", " + timestamp
+        + "]" : data.toString();
   }
 
 }

@@ -15,8 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.ViewPart;
-
-import samplemodel.SampleModel;
+import samplemodel.SampleModelCollection;
 
 /**
  * Ref: https://www.eclipse.org/forums/index.php/t/107919/
@@ -61,17 +60,35 @@ public class SampleView extends ViewPart
   {
     List<Object> res = new ArrayList<Object>();
 
-    res.add(new SampleModel(12));
-    res.add(new SampleModel("A String Object"));
-    res.add(new SampleModel(133.4));
-    res.add(new SampleModel("... another one"));
+    // singletons
+    res.add(SampleModelCollection.wrap(12));
+    res.add(SampleModelCollection.wrap("A String Object"));
+    res.add(SampleModelCollection.wrap(133.4));
+    res.add(SampleModelCollection.wrap("... another one"));
     res.add(new Date());
-    res.add(new SampleModel(332.3));
-    res.add(new SampleModel("Another string"));
-    res.add(new SampleModel("smiles"));
-    res.add(new SampleModel(1));
-    res.add(new SampleModel(5));
+    res.add(SampleModelCollection.wrap(332.3));
+    res.add(SampleModelCollection.wrap("Another string"));
+    res.add(SampleModelCollection.wrap("smiles"));
+    res.add(SampleModelCollection.wrap(1));
+    res.add(SampleModelCollection.wrap(5));
 
+    // collections
+    res.add(SampleModelCollection.wrap(1, 2, 3, 4, 5));
+    res.add(SampleModelCollection.wrap(1, 2, 3, 4, 6));
+    res.add(SampleModelCollection.wrap(1, 2, 3));
+    res.add(SampleModelCollection.wrap("a", "b", "c", "d", "e"));
+
+    // timestamped
+    res.add(SampleModelCollection.wrap(1.1, 2.2, 4.5, 3.0, 6.0).timestamp(0L,
+        1000L, 2000L, 3000L, 4000L));
+    res.add(SampleModelCollection.wrap(2.1, 3.2, 1.5, 1.0, 2.0).timestamp(0L,
+        1000L, 2000L, 3000L, 4000L));
+    res.add(SampleModelCollection.wrap(3.1, 2.0, 1.0).timestamp(0L, 3000L,
+        4000L));
+    res.add(SampleModelCollection.wrap(0.1, 4.2, 2.5, 2.0, 1.0).timestamp(0L,
+        1000L, 2000L, 3000L, 5000L));
+    res.add(SampleModelCollection.wrap(4.1, 1.2, 3.5, 4.0, 3.0, 6.0).timestamp(
+        0L, 1000L, 2000L, 3000L, 4000L, 5000L));
     return res;
   }
 
