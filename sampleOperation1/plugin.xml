@@ -18,7 +18,9 @@
             </and>
       	</applicable>
          <documentation>
-            Add numbers operation. Some &lt;b&gt;html&lt;/b&gt; tags.
+            Add numbers operation. Some &lt;b&gt;html&lt;/b&gt; tags. And some in &lt;i&gt;italics&lt;/i&gt;.
+&lt;p/&gt;
+New paragraph goes here.
          </documentation>
       </operation>
       <operation
