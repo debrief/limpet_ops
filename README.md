@@ -24,7 +24,7 @@ The [SampleView](sampleView/src/sampleview/views/SampleView.java) is a JFace tre
 The [OperationsBrowserView](sampleView/src/sampleview/views/opsbrowser/OperationsBrowserView.java) is a more complex view. It's vertically split in three parts. The top part is a JFace tree viewer showing the list of registered operations in the library. Depending on the selection some operations would be unavailable (showed in gray). When such operation is selected, the "Apply Operation" button would be disabled and the bottom part - the "Applicability Test Output" shall display a meaningful message as to why the operation is not applicable to the current selection. The middle part contains documentation for the currently selected operation. A drop-down on top allows switching between the whole library of operations and those only applicable to the current selection (consider using checkbox instead).
 
 The following screenshot shows the sample view (Limpet POC View) shown next to the Operations browser.
-![alt tag](ops_browser.png)
+![alt tag](ops_browser.PNG)
 Clicking the "Apply Operation" button should actually load the plugin and the operation code, execute it and show the result in a popup.
 
 # Misc closed issues
