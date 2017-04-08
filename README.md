@@ -31,7 +31,8 @@ Clicking the "Apply Operation" button should actually load the plugin and the op
 Eclipse 3.8
 
 # Known issues
-## The model plugin imports the Eclipse Core expression language:
+## Errors reported in sampleModel.operation.exsd
+The extension point schema imports the Eclipse Core expression language:
 ```xml
 <include schemaLocation="schema://org.eclipse.core.expressions/schema/expressionLanguage.exsd"/>
 ```
