@@ -27,6 +27,16 @@ The following screenshot shows the sample view (Limpet POC View) shown next to t
 ![alt tag](ops_browser.PNG)
 Clicking the "Apply Operation" button should actually load the plugin and the operation code, execute it and show the result in a popup.
 
+# Target platform
+Eclipse 3.8
+
+# Known issues
+## The model plugin imports the Eclipse Core expression language:
+```xml
+<include schemaLocation="schema://org.eclipse.core.expressions/schema/expressionLanguage.exsd"/>
+```
+For some reason Eclipse reports errors (in the problems view) for the referenced elements. Safe to ignore. 
+
 # Misc closed issues
 * [Include documentation for operation](https://github.com/debrief/limpet_ops/issues/1)
 * [Document test failure reasons](https://github.com/debrief/limpet_ops/issues/3)
